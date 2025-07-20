@@ -15,7 +15,8 @@ const axiosInstance: AxiosInstance = axios.create({
  */
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('token')
+    // 优先从 localStorage 取，再从 sessionStorage 取
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }

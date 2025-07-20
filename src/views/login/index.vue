@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useLogin } from '@/views/login/composables/useLogin.ts'
-import { loginRules } from '@/views/login/validations.ts'
+import { useLogin } from '@/views/login/logic/useLogin.ts'
+import { loginRules } from '@/views/login/logic/rule.ts'
 
 defineOptions({
   name: 'LoginPage',

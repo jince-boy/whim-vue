@@ -1,8 +1,11 @@
 import type { FormInst } from 'naive-ui'
 import { MdPerson, IosLock } from '@vicons/ionicons4'
 import { ShieldTask16Filled } from '@vicons/fluent'
-import type { LoginForm } from '@/views/login/types.ts'
+import type { LoginForm } from '@/views/login/logic/types.ts'
 import { login, getCaptcha } from '@/api/system/auth'
+import { useAuthStore } from '@/stores/modules/auth.ts'
+
+const authStore = useAuthStore()
 
 export function useLogin() {
   const message = useMessage()
@@ -22,6 +25,7 @@ export function useLogin() {
         login(form).then((res) => {
           if (res.code == 200) {
             message.success(res.message)
+            authStore.login(res.data.token, form.rememberMe)
           } else {
             handleCaptcha()
             message.error(res.message)

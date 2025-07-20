@@ -1,5 +1,5 @@
 import { request, RequestMethod } from '@/utils/http'
-import type { CaptchaResult, LoginResult } from '@/views/login/types.ts'
+import type { CaptchaResult, LoginResult } from '@/views/login/logic/types.ts'
 
 /**
  * 登录
