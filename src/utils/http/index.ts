@@ -5,6 +5,8 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios'
 import type { ApiResponse } from '@/utils/http/type.ts'
+import router from '@/router'
+import { useAuthStore } from '@/stores/modules/auth.ts'
 
 const axiosInstance: AxiosInstance = axios.create({
   timeout: 10000,
@@ -32,7 +34,17 @@ axiosInstance.interceptors.request.use(
  */
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
-    if (response.data.code === 401 && response.data.status === false) {
+    if (response.data.code === 401) {
+      window['$message'].warning('登录已过期，请重新登录')
+      useAuthStore().logout()
+      const redirect = window.location.pathname + window.location.search
+      router.replace({
+        path: '/login',
+        query: {
+          redirect: encodeURIComponent(redirect),
+        },
+      })
+      return Promise.reject(response.data)
     }
     return response.data
   },

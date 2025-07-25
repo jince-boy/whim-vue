@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import { useThemeStore } from '@/stores/modules/theme.ts'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 defineOptions({
   name: 'WelcomePage',
 })
 const themeStore = useThemeStore()
+
+const toggleRoute = () => {
+  themeStore.toggleTheme()
+  router.push('/system/user')
+}
 </script>
 
 <template>
-  <n-layout has-sider>
-    <n-layout-sider content-style="padding: 24px;"> 海淀桥 </n-layout-sider>
-    <n-layout>
-      <n-layout-header>颐和园路</n-layout-header>
-      <n-layout-content content-style="padding: 24px;"> 平山道 </n-layout-content>
-      <n-layout-footer>成府路</n-layout-footer>
-    </n-layout>
-  </n-layout>
-  <n-button type="primary" @click="themeStore.toggleTheme()"> Primary </n-button>
+  <n-button type="primary" @click="toggleRoute"> Primary</n-button>
 </template>
 
 <style scoped></style>

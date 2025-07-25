@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useLogin } from '@/views/login/logic/useLogin.ts'
 import { loginRules } from '@/views/login/logic/rule.ts'
+import systemSetting from '@/config/SystemSetting.ts'
 
 defineOptions({
   name: 'LoginPage',
@@ -85,7 +86,7 @@ const {
           </n-form-item>
         </n-form>
       </n-card>
-      <n-el class="copyright">Copyright © 2025–Present Whim. All Rights Reserved.</n-el>
+      <n-el class="copyright">{{ systemSetting.copyright }}</n-el>
     </n-flex>
   </n-config-provider>
 </template>
@@ -98,6 +99,10 @@ const {
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
+
+  h2 {
+    margin: 12px auto;
+  }
 
   .copyright {
     color: #fff;

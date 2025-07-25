@@ -1,23 +1,40 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
-const modules = import.meta.glob('../views/**/*.vue')
-const constantRouter: RouteRecordRaw[] = [
+const modules = import.meta.glob('@/views/**/*.vue')
+const Layout = () => import('@/layout/index.vue')
+
+export const constantRouter: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'welcome',
-    component: modules['../views/welcome/index.vue'],
-    meta: {
-      title: '欢迎',
-      requiresAuth: true,
-    },
+    name: 'home',
+    component: Layout,
+    redirect: 'index',
+    children: [
+      {
+        path: 'index',
+        component: modules[`/src/views/welcome/index.vue`],
+        name: 'index',
+        meta: {
+          title: '首页',
+          visible: false,
+        },
+      },
+    ],
   },
   {
     path: '/login',
     name: 'login',
-    component: modules['../views/login/index.vue'],
+    component: modules['/src/views/login/index.vue'],
     meta: {
       title: '登录',
-      requiresAuth: false,
+    },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: modules['/src/views/error/404.vue'],
+    meta: {
+      title: '404',
     },
   },
 ]

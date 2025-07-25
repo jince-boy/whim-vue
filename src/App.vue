@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { useThemeStore } from '@/stores/modules/theme.ts'
-import themeOverrides from '@/config/NaiveTheme.ts'
+import { lightThemeOverrides, darkThemeOverrides } from '@/config/NaiveTheme.ts'
+import { lightTheme } from 'naive-ui'
 
 const themeStore = useThemeStore()
 </script>
 
 <template>
-  <n-config-provider :theme="themeStore.getTheme" :theme-overrides="themeOverrides">
-
+  <n-config-provider
+    :theme="themeStore.getTheme"
+    :theme-overrides="themeStore.getTheme == lightTheme ? lightThemeOverrides : darkThemeOverrides"
+  >
     <!--加载条-->
     <n-loading-bar-provider>
       <!--信息-->

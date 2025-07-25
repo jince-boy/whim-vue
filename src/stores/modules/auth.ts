@@ -1,15 +1,19 @@
 import { defineStore } from 'pinia'
+import { logout } from '@/api/system/auth'
+import { resetRouter } from '@/utils/route'
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token')
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token') || null
     return {
       token,
     }
   },
   getters: {
     getToken: (state) => state.token,
-    isLogin: (state) => !!state.token,
+    isLogin: (state) => {
+      return !!state.token
+    },
   },
   actions: {
     login(token: string, rememberMe: boolean = false) {
@@ -26,6 +30,7 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       localStorage.removeItem('token')
       sessionStorage.removeItem('token')
+      resetRouter()
     },
   },
 })

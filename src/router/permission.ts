@@ -1,25 +1,42 @@
 import router from '@/router'
 import { useAuthStore } from '@/stores/modules/auth.ts'
+import { useUserStore } from '@/stores/modules/user.ts'
+import { generateRoutes } from '@/utils/route'
+import systemSetting from '@/config/SystemSetting.ts'
 
-router.beforeEach(async (to, from) => {
-  document.title = to.meta.title as string
+// 不需要登录的白名单
+const whiteList = ['/login']
+router.beforeEach(async (to) => {
+  window['$loadingBar'].start()
+  document.title = `${systemSetting.title}-${to.meta.title}`
   if (useAuthStore().isLogin) {
     if (to.path === '/login') {
       return '/'
+    } else {
+      if (!useUserStore().hasUserInfo) {
+        await useUserStore().getUserInfo()
+        const asyncRoutes = generateRoutes(useUserStore().menus)
+        asyncRoutes.forEach((route) => {
+          console.log(route)
+          router.addRoute('home', route)
+        })
+        return to.fullPath
+      }
+      return true
     }
-    return true
   } else {
-    if (to.meta.requiresAuth) {
-      // todo 不需要登录的白名单
+    if (whiteList.includes(to.path)) {
+      return true
+    } else {
       return {
         path: '/login',
         // 保存我们所在的位置，以便以后再来
         query: { redirect: encodeURIComponent(to.fullPath || '/') },
       }
-    } else {
-      return true
     }
   }
 })
 
-router.afterEach(() => {})
+router.afterEach(() => {
+  window['$loadingBar'].finish()
+})

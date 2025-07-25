@@ -4,6 +4,7 @@ import { ShieldTask16Filled } from '@vicons/fluent'
 import type { LoginForm } from '@/views/login/logic/types.ts'
 import { login, getCaptcha } from '@/api/system/auth'
 import { useAuthStore } from '@/stores/modules/auth.ts'
+import router from '@/router'
 
 const authStore = useAuthStore()
 
@@ -26,6 +27,9 @@ export function useLogin() {
           if (res.code == 200) {
             message.success(res.message)
             authStore.login(res.data.token, form.rememberMe)
+            router.push(
+              decodeURIComponent((router.currentRoute.value.query.redirect as string) || '/'),
+            )
           } else {
             handleCaptcha()
             message.error(res.message)
