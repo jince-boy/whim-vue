@@ -1,9 +1,27 @@
 <script setup lang="ts">
 import systemSetting from '@/config/SystemSetting.ts'
+import type { MenuOption } from 'naive-ui'
+import { RouterLink } from 'vue-router'
 
 defineOptions({
   name: 'LayoutSidebar',
 })
+const menuOptions: MenuOption[] = [
+  {
+    label: () => h(RouterLink, { to: '/index' }, { default: () => '首页' }),
+    key: 'Home',
+  },
+  {
+    label: '系统管理',
+    key: 'System',
+    children: [
+      {
+        label: () => h(RouterLink, { to: '/system/user' }, { default: () => '用户管理' }),
+        key: 'User',
+      },
+    ],
+  },
+]
 </script>
 
 <template>
@@ -13,13 +31,7 @@ defineOptions({
       <span>{{ systemSetting.title }}</span>
     </n-flex>
   </router-link>
-  <n-menu
-    v-model:value="activeKey"
-    :collapsed="collapsed"
-    :collapsed-width="64"
-    :collapsed-icon-size="22"
-    :options="menuOptions"
-  />
+  <n-menu :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions" />
 </template>
 
 <style scoped lang="scss">
@@ -44,5 +56,9 @@ defineOptions({
   span {
     font-size: 18px;
   }
+}
+
+.n-menu {
+  user-select: none;
 }
 </style>

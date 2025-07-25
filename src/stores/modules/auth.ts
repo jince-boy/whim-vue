@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import { logout } from '@/api/system/auth'
-import { resetRouter } from '@/utils/route'
+import { usePermissionStore } from '@/stores/modules/permission.ts'
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
@@ -30,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       localStorage.removeItem('token')
       sessionStorage.removeItem('token')
-      resetRouter()
+      usePermissionStore().resetRouter()
     },
   },
 })

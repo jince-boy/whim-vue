@@ -1,7 +1,7 @@
 import router from '@/router'
 import { useAuthStore } from '@/stores/modules/auth.ts'
 import { useUserStore } from '@/stores/modules/user.ts'
-import { generateRoutes } from '@/utils/route'
+import { usePermissionStore } from '@/stores/modules/permission.ts'
 import systemSetting from '@/config/SystemSetting.ts'
 
 // 不需要登录的白名单
@@ -15,9 +15,8 @@ router.beforeEach(async (to) => {
     } else {
       if (!useUserStore().hasUserInfo) {
         await useUserStore().getUserInfo()
-        const asyncRoutes = generateRoutes(useUserStore().menus)
-        asyncRoutes.forEach((route) => {
-          console.log(route)
+        usePermissionStore().generateRoutes(useUserStore().menus)
+        usePermissionStore().getDynamicRoutes.forEach((route) => {
           router.addRoute('home', route)
         })
         return to.fullPath

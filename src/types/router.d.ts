@@ -6,9 +6,9 @@ export {}
 declare module 'vue-router' {
   interface RouteMeta {
     title?: string
-    requiresAuth?: boolean
     keepAlive?: boolean
-    visible?: boolean
+    isMenu?: boolean
     icon?: string
+    visible?: 0 | 1
   }
 }

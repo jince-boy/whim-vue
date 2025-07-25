@@ -6,7 +6,7 @@ export const lightThemeOverrides: GlobalThemeOverrides = {
   },
   Layout: {
     footerColor: '#fff',
-  },
+  }
 }
 export const darkThemeOverrides: GlobalThemeOverrides = {
   common: {

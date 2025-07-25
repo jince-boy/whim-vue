@@ -9,7 +9,7 @@ defineOptions({
 const themeStore = useThemeStore()
 
 const toggleRoute = () => {
-  themeStore.toggleTheme()
+  // themeStore.toggleTheme()
   router.push('/system/user')
 }
 </script>
