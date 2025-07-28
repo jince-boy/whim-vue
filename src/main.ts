@@ -1,4 +1,3 @@
-import '@/assets/style.css'
 import { createApp } from 'vue'
 
 import App from '@/App.vue'
@@ -7,9 +6,15 @@ import store from '@/stores'
 import router from '@/router'
 import '@/router/permission'
 
-import naive from 'naive-ui'
+// 全局样式
+import '@/assets/style/style.css'
+// iconfont图标
+import '@/assets/iconfont/iconfont.css'
+// 字体
 import 'vfonts/Inter.css'
 import 'vfonts/FiraCode.css'
+
+import naive from 'naive-ui'
 
 import { setupNaiveDiscreteApi } from '@/plugins'
 

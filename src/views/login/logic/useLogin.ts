@@ -1,10 +1,13 @@
 import type { FormInst } from 'naive-ui'
-import { MdPerson, IosLock } from '@vicons/ionicons4'
-import { ShieldTask16Filled } from '@vicons/fluent'
 import type { LoginForm } from '@/views/login/logic/types.ts'
 import { login, getCaptcha } from '@/api/system/auth'
 import { useAuthStore } from '@/stores/modules/auth.ts'
 import router from '@/router'
+import createIcon from '@/components/icon/icon.ts'
+
+const userIcon = createIcon('yonghu')
+const passwordIcon = createIcon('mima')
+const captchaIcon = createIcon('yanzhengma')
 
 const authStore = useAuthStore()
 
@@ -23,11 +26,11 @@ export function useLogin() {
   const handleLogin = () => {
     formRef.value?.validate((errors) => {
       if (!errors) {
-        login(form).then((res) => {
+        login(form).then(async (res) => {
           if (res.code == 200) {
             message.success(res.message)
-            authStore.login(res.data.token, form.rememberMe)
-            router.push(
+            await authStore.login(res.data.token, form.rememberMe)
+            await router.push(
               decodeURIComponent((router.currentRoute.value.query.redirect as string) || '/'),
             )
           } else {
@@ -51,9 +54,9 @@ export function useLogin() {
     formRef,
     form,
     captcha,
-    MdPerson,
-    IosLock,
-    ShieldTask16Filled,
+    userIcon,
+    passwordIcon,
+    captchaIcon,
     handleLogin,
     handleCaptcha,
   }

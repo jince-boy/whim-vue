@@ -17,7 +17,7 @@ export const constantRouter: RouteRecordRaw[] = [
         meta: {
           title: '首页',
           isMenu: true,
-          icon: 'home',
+          icon: 'icona02',
         },
       },
     ],

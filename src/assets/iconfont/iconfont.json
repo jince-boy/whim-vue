@@ -1,0 +1,58 @@
+{
+  "id": "4986031",
+  "name": "whim-vue icon",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "whim-vue icon",
+  "glyphs": [
+    {
+      "icon_id": "507814",
+      "name": "icon_a02",
+      "font_class": "icona02",
+      "unicode": "e6eb",
+      "unicode_decimal": 59115
+    },
+    {
+      "icon_id": "40379395",
+      "name": "setting",
+      "font_class": "setting",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    },
+    {
+      "icon_id": "40379441",
+      "name": "user",
+      "font_class": "user",
+      "unicode": "e6c3",
+      "unicode_decimal": 59075
+    },
+    {
+      "icon_id": "44849522",
+      "name": "菜单",
+      "font_class": "menu",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "32243096",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
+      "icon_id": "32243108",
+      "name": "密码",
+      "font_class": "mima",
+      "unicode": "e695",
+      "unicode_decimal": 59029
+    },
+    {
+      "icon_id": "32299995",
+      "name": "验证码",
+      "font_class": "yanzhengma",
+      "unicode": "e696",
+      "unicode_decimal": 59030
+    }
+  ]
+}

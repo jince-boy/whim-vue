@@ -7,20 +7,12 @@ defineOptions({
   name: 'LoginPage',
 })
 
-const {
-  formRef,
-  form,
-  captcha,
-  MdPerson,
-  IosLock,
-  ShieldTask16Filled,
-  handleLogin,
-  handleCaptcha,
-} = useLogin()
+const { formRef, form, captcha, userIcon, passwordIcon, captchaIcon, handleLogin, handleCaptcha } =
+  useLogin()
 </script>
 
 <template>
-  <n-config-provider :theme="null">
+  <n-config-provider :theme="null" preflight-style-disabled>
     <n-flex justify="center" align="center" class="login-container">
       <n-card class="login-box" hoverable>
         <h2>Whim Admin</h2>
@@ -39,7 +31,7 @@ const {
               :input-props="{ autocomplete: 'new-password' }"
             >
               <template #prefix>
-                <n-icon :component="MdPerson" />
+                <n-icon :component="userIcon" />
               </template>
             </n-input>
           </n-form-item>
@@ -51,7 +43,7 @@ const {
               :input-props="{ autocomplete: 'new-password' }"
             >
               <template #prefix>
-                <n-icon :component="IosLock" />
+                <n-icon :component="passwordIcon" />
               </template>
             </n-input>
           </n-form-item>
@@ -63,7 +55,7 @@ const {
                 :input-props="{ autocomplete: 'new-password' }"
               >
                 <template #prefix>
-                  <n-icon :component="ShieldTask16Filled" />
+                  <n-icon :component="captchaIcon" />
                 </template>
               </n-input>
               <n-image
@@ -92,13 +84,18 @@ const {
 </template>
 
 <style scoped lang="scss">
+//:deep(.n-input__placeholder) {
+//  line-height: 1.6;
+//}
+
 .login-container {
   height: 100vh;
-  background-image: url('@/assets/login-bg.svg');
+  background-image: url('@/assets/images/login-bg.svg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
+  line-height: 1.5;
 
   h2 {
     margin: 12px auto;
@@ -117,6 +114,11 @@ const {
 
 .login-box {
   max-width: 400px;
+  height: 389.59px;
+
+  :deep(.n-input__placeholder) {
+    line-height: 1.6;
+  }
 
   h2 {
     text-align: center;
