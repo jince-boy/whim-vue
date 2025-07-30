@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia'
 import type { MenuItem } from '@/stores/type.ts'
 import type { RouteRecordRaw } from 'vue-router'
 import router, { constantRouter } from '@/router'
@@ -93,7 +92,7 @@ export const usePermissionStore = defineStore('permission', {
           const hasComponent = !!route.component
           const key = typeof route.name === 'string' ? route.name : fullPath
           const icon = meta.icon
-            ? () => h(NIcon, null, { default: createIcon(meta.icon as string, 20) }) // 直接使用 createIcon 返回的函数
+            ? () => h(NIcon, null, { default: createIcon(meta.icon as string, 16) }) // 直接使用 createIcon 返回的函数
             : undefined
 
           if (isMenu) {
@@ -128,7 +127,6 @@ export const usePermissionStore = defineStore('permission', {
 
         return result
       }
-
       return [...buildMenus(constantRouter), ...buildMenus(this.dynamicRoutes)]
     },
   },

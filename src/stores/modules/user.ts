@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia'
 import type { UserInfoResult } from '@/api/system/user/type.ts'
 import { getUserInfo } from '@/api/system/user'
 

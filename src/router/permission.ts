@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/modules/auth.ts'
 import { useUserStore } from '@/stores/modules/user.ts'
 import { usePermissionStore } from '@/stores/modules/permission.ts'
 import systemSetting from '@/config/SystemSetting.ts'
+import { useKeepAliveStore } from '@/stores/modules/keepAlive.ts'
 
 // 不需要登录的白名单
 const whiteList = ['/login']
@@ -21,10 +22,16 @@ router.beforeEach(async (to) => {
         })
         return to.fullPath
       }
+      if (to.meta.keepAlive) {
+        useKeepAliveStore().addKeepAlive(to.name as string)
+      }
       return true
     }
   } else {
     if (whiteList.includes(to.path)) {
+      if (to.meta.keepAlive) {
+        useKeepAliveStore().addKeepAlive(to.name as string)
+      }
       return true
     } else {
       return {

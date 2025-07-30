@@ -1,5 +1,3 @@
-import {defineStore} from "pinia";
-
 import {lightTheme, darkTheme, type GlobalTheme} from 'naive-ui'
 
 export const useThemeStore = defineStore('theme', {

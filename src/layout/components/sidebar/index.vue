@@ -2,41 +2,70 @@
 import systemSetting from '@/config/SystemSetting.ts'
 import { RouterLink } from 'vue-router'
 import { usePermissionStore } from '@/stores/modules/permission.ts'
+import { useRoute } from 'vue-router'
+import type { MenuInst } from 'naive-ui'
 
 defineOptions({
   name: 'LayoutSidebar',
 })
-
+const props = defineProps({
+  collapsed: {
+    type: Boolean,
+    default: false,
+  },
+})
+const route = useRoute()
 const permissionStore = usePermissionStore()
+
+const menuInstRef = ref<MenuInst | null>(null)
+// 当前选中的菜单key
+const selectedKey = ref<string>(route.name as string)
+
+watch(
+  () => route.name,
+  (newName) => {
+    selectedKey.value = newName as string
+    menuInstRef.value?.showOption(newName as string)
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
 
 <template>
-  <router-link to="/">
-    <n-flex class="logo" justify="center" align="center">
+  <router-link to="/index">
+    <n-flex class="logo" justify="center" align="center" :wrap="false">
       <img src="../../../assets/images/logo.png" alt="logo" />
-      <span>{{ systemSetting.title }}</span>
+      <span v-if="!props.collapsed">{{ systemSetting.title }}</span>
     </n-flex>
   </router-link>
   <n-menu
+    ref="menuInstRef"
     :collapsed-width="64"
-    :collapsed-icon-size="22"
+    :collapsed-icon-size="16"
+    :icon-size="16"
+    :accordion="true"
     :options="permissionStore.generateMenus()"
+    v-model:value="selectedKey"
   />
 </template>
 
 <style scoped lang="scss">
+.n-flex {
+  height: 100%;
+}
+
 .logo {
   height: 50px;
   border-bottom: 1px solid var(--divider-color);
+  white-space: nowrap;
+  overflow: hidden;
   transition:
     color 0.3s var(--n-bezier),
     background-color 0.3s var(--n-bezier),
     box-shadow 0.3s var(--n-bezier),
     border-color 0.3s var(--n-bezier);
-
-  .n-flex {
-    height: 100%;
-  }
 
   img {
     width: 30px;
@@ -45,6 +74,7 @@ const permissionStore = usePermissionStore()
 
   span {
     font-size: 18px;
+    font-weight: 500;
   }
 }
 

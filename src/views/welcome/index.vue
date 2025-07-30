@@ -12,10 +12,16 @@ const toggleRoute = () => {
   // themeStore.toggleTheme()
   router.push('/system/user')
 }
+const count = ref(0)
 </script>
 
 <template>
-  <n-button type="primary" @click="toggleRoute"> Primary</n-button>
+  <div>
+    <n-button type="primary" @click="toggleRoute">按钮</n-button>
+    <p>Current component: A</p>
+    <span>count: {{ count }}</span>
+    <button @click="count++">+</button>
+  </div>
 </template>
 
 <style scoped></style>

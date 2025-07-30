@@ -3,6 +3,9 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 const modules = import.meta.glob('@/views/**/*.vue')
 const Layout = () => import('@/layout/index.vue')
 
+/**
+ * 路由name需要和组件name一致，否则缓存不起效果
+ */
 export const constantRouter: RouteRecordRaw[] = [
   {
     path: '/',
@@ -13,7 +16,7 @@ export const constantRouter: RouteRecordRaw[] = [
       {
         path: 'index',
         component: modules[`/src/views/welcome/index.vue`],
-        name: 'index',
+        name: 'WelcomePage',
         meta: {
           title: '首页',
           isMenu: true,
