@@ -1,9 +1,7 @@
 import type { MenuItem } from '@/stores/type.ts'
 import type { RouteRecordRaw } from 'vue-router'
 import router, { constantRouter } from '@/router'
-import { RouterLink } from 'vue-router'
-import { NIcon, type MenuOption } from 'naive-ui'
-import createIcon from '@/components/icon/icon.ts'
+import { buildMenus } from '@/utils/menu'
 
 const modules = import.meta.glob('@/views/**/*.vue')
 export const usePermissionStore = defineStore('permission', {
@@ -76,57 +74,6 @@ export const usePermissionStore = defineStore('permission', {
      * 生成菜单
      */
     generateMenus() {
-      const joinPaths = (base: string, path: string): string => {
-        if (path.startsWith('/')) return path
-        if (base.endsWith('/')) return base + path
-        return `${base}/${path}`
-      }
-      const buildMenus = (routes: RouteRecordRaw[], basePath = ''): MenuOption[] => {
-        const result: MenuOption[] = []
-        for (const route of routes) {
-          const fullPath = joinPaths(basePath, route.path)
-          const meta = route.meta || {}
-          const title = meta.title || '未命名'
-          const isMenu = meta.isMenu === true
-          const hasChildren = Array.isArray(route.children) && route.children.length > 0
-          const hasComponent = !!route.component
-          const key = typeof route.name === 'string' ? route.name : fullPath
-          const icon = meta.icon
-            ? () => h(NIcon, null, { default: createIcon(meta.icon as string, 16) }) // 直接使用 createIcon 返回的函数
-            : undefined
-
-          if (isMenu) {
-            if (hasChildren) {
-              const childrenMenu = buildMenus(route.children!, fullPath)
-              if (childrenMenu.length > 0) {
-                result.push({
-                  label: title,
-                  key,
-                  icon,
-                  children: childrenMenu,
-                })
-              } else if (hasComponent) {
-                result.push({
-                  label: () => h(RouterLink, { to: fullPath }, { default: () => title }),
-                  key,
-                  icon,
-                })
-              }
-            } else if (hasComponent) {
-              result.push({
-                label: () => h(RouterLink, { to: fullPath }, { default: () => title }),
-                key,
-                icon,
-              })
-            }
-          } else if (hasChildren) {
-            // 非菜单但有子路由，继续递归
-            result.push(...buildMenus(route.children!, fullPath))
-          }
-        }
-
-        return result
-      }
       return [...buildMenus(constantRouter), ...buildMenus(this.dynamicRoutes)]
     },
   },

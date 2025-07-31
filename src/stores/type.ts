@@ -11,3 +11,13 @@ export interface MenuItem {
   remark: string
   children?: MenuItem[]
 }
+
+// 定义 TabState 的类型
+export interface TabState {
+  title: string
+  path: string
+  name: string
+  icon: string
+  closeable: boolean
+  focused?: boolean;
+}

@@ -7,6 +7,7 @@ import { useKeepAliveStore } from '@/stores/modules/keepAlive.ts'
 
 // 不需要登录的白名单
 const whiteList = ['/login']
+
 router.beforeEach(async (to) => {
   window['$loadingBar'].start()
   document.title = `${systemSetting.title}-${to.meta.title}`
@@ -18,7 +19,7 @@ router.beforeEach(async (to) => {
         await useUserStore().getUserInfo()
         usePermissionStore().generateRoutes(useUserStore().menus)
         usePermissionStore().getDynamicRoutes.forEach((route) => {
-          router.addRoute('home', route)
+          router.addRoute('Layout', route)
         })
         return to.fullPath
       }

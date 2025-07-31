@@ -9,14 +9,14 @@ const Layout = () => import('@/layout/index.vue')
 export const constantRouter: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'home',
+    name: 'Layout',
     component: Layout,
     redirect: 'index',
     children: [
       {
         path: 'index',
         component: modules[`/src/views/welcome/index.vue`],
-        name: 'WelcomePage',
+        name: 'home',
         meta: {
           title: '首页',
           isMenu: true,

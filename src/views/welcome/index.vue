@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { useThemeStore } from '@/stores/modules/theme.ts'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 defineOptions({
-  name: 'WelcomePage',
+  name: 'home',
 })
-const themeStore = useThemeStore()
 
 const toggleRoute = () => {
-  // themeStore.toggleTheme()
   router.push('/system/user')
 }
 const count = ref(0)
