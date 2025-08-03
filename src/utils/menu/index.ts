@@ -2,6 +2,10 @@ import { type RouteRecordRaw, RouterLink } from 'vue-router'
 import { type MenuOption, NIcon } from 'naive-ui'
 import createIcon from '@/components/icon/icon.ts'
 
+export type SafeMenuOption = Omit<MenuOption, 'children'> & {
+  children?: SafeMenuOption[]
+}
+
 /**
  * 路径拼接
  * @param base
@@ -17,7 +21,7 @@ export const joinPaths = (base: string, path: string): string => {
  * @param routes
  * @param basePath
  */
-export const buildMenus = (routes: RouteRecordRaw[], basePath = ''): MenuOption[] => {
+export const buildMenus = (routes: RouteRecordRaw[], basePath = ''): SafeMenuOption[] => {
   const result: MenuOption[] = []
   for (const route of routes) {
     const fullPath = joinPaths(basePath, route.path)

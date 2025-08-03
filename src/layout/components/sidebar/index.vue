@@ -46,7 +46,7 @@ watch(
     :collapsed-icon-size="16"
     :icon-size="16"
     :accordion="true"
-    :options="permissionStore.generateMenus()"
+    :options="permissionStore.getMenus"
     v-model:value="selectedKey"
   />
 </template>
