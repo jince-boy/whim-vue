@@ -46,7 +46,7 @@ watch(
     :collapsed-icon-size="16"
     :icon-size="16"
     :accordion="true"
-    :options="permissionStore.generateMenus()"
+    :options="permissionStore.getMenus"
     v-model:value="selectedKey"
   />
 </template>
@@ -62,7 +62,6 @@ watch(
   white-space: nowrap;
   overflow: hidden;
   transition:
-    color 0.3s var(--n-bezier),
     background-color 0.3s var(--n-bezier),
     box-shadow 0.3s var(--n-bezier),
     border-color 0.3s var(--n-bezier);
@@ -74,7 +73,7 @@ watch(
 
   span {
     font-size: 18px;
-    font-weight: 500;
+    //font-weight: 500;
   }
 }
 

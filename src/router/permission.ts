@@ -21,6 +21,7 @@ router.beforeEach(async (to) => {
         usePermissionStore().getDynamicRoutes.forEach((route) => {
           router.addRoute('Layout', route)
         })
+        usePermissionStore().generateMenus()
         return to.fullPath
       }
       if (to.meta.keepAlive) {

@@ -20,6 +20,26 @@ export const constantRouter: RouteRecordRaw[] = [
         meta: {
           title: '首页',
           isMenu: true,
+          icon: 'smile',
+        },
+      },
+      {
+        path: '/redirect/:path(.*)',
+        redirect: (to) => {
+          return {
+            path: '/' + to.params.path,
+            query: to.query,
+            hash: to.hash,
+          }
+        },
+      },
+      {
+        path: 'aaa',
+        component: modules[`/src/views/welcome/index.vue`],
+        name: 'aaa',
+        meta: {
+          title: '管理',
+          isMenu: true,
           icon: 'icona02',
         },
       },

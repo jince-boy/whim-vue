@@ -6,8 +6,7 @@ import store from '@/stores'
 import router from '@/router'
 import '@/router/permission'
 
-// 全局样式
-import '@/assets/style/style.css'
+
 // 动画
 import 'animate.css'
 // iconfont图标
@@ -17,6 +16,9 @@ import 'vfonts/Inter.css'
 import 'vfonts/FiraCode.css'
 
 import naive from 'naive-ui'
+
+// 全局样式
+import '@/assets/style/style.css'
 
 import { setupNaiveDiscreteApi } from '@/plugins'
 

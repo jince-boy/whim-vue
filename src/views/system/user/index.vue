@@ -6,13 +6,13 @@ const count = ref(0)
 </script>
 
 <template>
-  <div>
+  <n-el class="app-wrapper">
     用户管理
     <n-button type="primary"> Primary</n-button>
     <p>Current component: A</p>
     <span>count: {{ count }}</span>
     <button @click="count++">+</button>
-  </div>
+  </n-el>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss"></style>

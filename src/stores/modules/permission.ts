@@ -1,16 +1,21 @@
 import type { MenuItem } from '@/stores/type.ts'
 import type { RouteRecordRaw } from 'vue-router'
 import router, { constantRouter } from '@/router'
-import { buildMenus } from '@/utils/menu'
+import { buildMenus, type SafeMenuOption } from '@/utils/menu'
+import type { MenuOption } from 'naive-ui'
 
 const modules = import.meta.glob('@/views/**/*.vue')
 export const usePermissionStore = defineStore('permission', {
   state: () => ({
     dynamicRoutes: [] as RouteRecordRaw[],
+    menus: [] as SafeMenuOption[],
   }),
   getters: {
     getDynamicRoutes(state): RouteRecordRaw[] {
       return state.dynamicRoutes
+    },
+    getMenus(state): MenuOption[] {
+      return state.menus
     },
   },
   actions: {
@@ -74,7 +79,10 @@ export const usePermissionStore = defineStore('permission', {
      * 生成菜单
      */
     generateMenus() {
-      return [...buildMenus(constantRouter), ...buildMenus(this.dynamicRoutes)]
+      this.menus = [
+        ...buildMenus(constantRouter),
+        ...buildMenus(this.dynamicRoutes),
+      ] as SafeMenuOption[]
     },
   },
 })

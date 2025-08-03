@@ -51,13 +51,46 @@ export const useTabStore = defineStore('tab', {
       }
     },
     closeTab(tabName: string) {
-      // 找到要关闭的标签页索引
-      const index = this.tabs.findIndex((tab) => tab.name === tabName)
+      const index = this.tabs.findIndex((t) => t.name === tabName)
       if (index === -1) return
-      if (this.tabs[index].focused) {
-        this.tabs[index - 1].focused = true
-      }
+
+      const closingFocused = this.tabs[index].focused
       this.tabs.splice(index, 1)
+
+      if (closingFocused && this.tabs.length) {
+        // 优先聚焦前一个tab，没有则聚焦第一个
+        const newFocusIndex = index - 1 >= 0 ? index - 1 : 0
+        this.tabs.forEach((t, i) => (t.focused = i === newFocusIndex))
+      }
+    },
+    closeLeftTabs(tabName: string) {
+      const idx = this.tabs.findIndex((t) => t.name === tabName)
+      if (idx <= 0) return
+      const focusedName = this.tabs.find((t) => t.focused)?.name
+      this.tabs = this.tabs.filter(
+        (t, i) => i >= idx || !t.closeable || t.name === focusedName
+      )
+    },
+    closeRightTabs(tabName: string) {
+      const idx = this.tabs.findIndex((t) => t.name === tabName)
+      if (idx === -1 || idx === this.tabs.length - 1) return
+      const focusedName = this.tabs.find((t) => t.focused)?.name
+      this.tabs = this.tabs.filter(
+        (t, i) => i <= idx || !t.closeable || t.name === focusedName
+      )
+    },
+    closeOtherTabs(tabName: string) {
+      const focusedName = this.tabs.find((t) => t.focused)?.name
+      this.tabs = this.tabs.filter(
+        (t) =>
+          !t.closeable || t.name === tabName || t.name === focusedName
+      )
+    },
+
+    closeAllTabsExceptHome() {
+      const homeTab = this.tabs.find((t) => !t.closeable)
+      if (!homeTab) return
+      this.tabs = [{ ...homeTab, focused: true }]
     },
   },
 })

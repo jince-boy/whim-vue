@@ -1,20 +1,30 @@
 <script setup lang="ts">
 import { useKeepAliveStore } from '@/stores/modules/keepAlive.ts'
-import { useRoute } from 'vue-router'
+
+const appMainRef = ref<HTMLElement | null>(null)
+
+const appMainKey = ref(0)
 
 const keepAliveStore = useKeepAliveStore()
-const route = useRoute()
+
+const refresh = () => {
+  appMainKey.value++
+}
+defineExpose({
+  appMainRef,
+  refresh,
+})
 </script>
 
 <template>
-  <div class="appMain">
-    <router-view v-slot="{ Component }">
-      <transition name="page" mode="out-in">
-        <KeepAlive :include="keepAliveStore.keepAliveComponents">
-          <component :is="Component" :key="route.fullPath" />
-        </KeepAlive>
-      </transition>
-    </router-view>
+  <div ref="appMainRef" class="appMain">
+      <router-view v-slot="{ Component }">
+        <transition name="page" mode="out-in">
+          <KeepAlive :include="keepAliveStore.keepAliveComponents">
+            <component :is="Component" :key="appMainKey" />
+          </KeepAlive>
+        </transition>
+      </router-view>
   </div>
 </template>
 
@@ -22,6 +32,7 @@ const route = useRoute()
 .appMain {
   padding: 12px;
 }
+
 /* 在 style 标签中定义动画组合 */
 .page-leave-active {
   animation: shrinkOut 0.4s;

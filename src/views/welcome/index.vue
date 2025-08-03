@@ -13,12 +13,13 @@ const count = ref(0)
 </script>
 
 <template>
-  <div>
+  <n-el class="app-wrapper">
     <n-button type="primary" @click="toggleRoute">按钮</n-button>
     <p>Current component: A</p>
     <span>count: {{ count }}</span>
     <button @click="count++">+</button>
-  </div>
+  </n-el>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+</style>
