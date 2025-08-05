@@ -53,16 +53,6 @@ export const constantRouter: RouteRecordRaw[] = [
           }
         },
       },
-      {
-        path: 'aaa',
-        component: modules[`/src/views/welcome/index.vue`],
-        name: 'aaa',
-        meta: {
-          title: 'test',
-          isMenu: true,
-          icon: 'icona02',
-        },
-      },
     ],
   },
   {
