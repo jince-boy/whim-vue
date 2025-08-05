@@ -43,6 +43,26 @@ export const constantRouter: RouteRecordRaw[] = [
           icon: 'icona02',
         },
       },
+      {
+        path: '/redirect/:path(.*)',
+        redirect: (to) => {
+          return {
+            path: '/' + to.params.path,
+            query: to.query,
+            hash: to.hash,
+          }
+        },
+      },
+      {
+        path: 'aaa',
+        component: modules[`/src/views/welcome/index.vue`],
+        name: 'aaa',
+        meta: {
+          title: 'test',
+          isMenu: true,
+          icon: 'icona02',
+        },
+      },
     ],
   },
   {
