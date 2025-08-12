@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { usePermissionStore } from '@/stores/modules/permission.ts'
 import { useRoute } from 'vue-router'
 import type { MenuInst } from 'naive-ui'
+import { useThemeStore } from '@/stores/modules/theme.ts'
 
 defineOptions({
   name: 'LayoutSidebar',
@@ -16,6 +17,7 @@ const props = defineProps({
 })
 const route = useRoute()
 const permissionStore = usePermissionStore()
+const themeStore = useThemeStore()
 
 const menuInstRef = ref<MenuInst | null>(null)
 // 当前选中的菜单key
@@ -34,7 +36,7 @@ watch(
 </script>
 
 <template>
-  <router-link to="/index">
+  <router-link to="/index" v-if="themeStore.getShowLogo">
     <n-flex class="logo" justify="center" align="center" :wrap="false">
       <img src="../../../assets/images/logo.png" alt="logo" />
       <span v-if="!props.collapsed">{{ systemSetting.title }}</span>
@@ -48,6 +50,7 @@ watch(
     :accordion="true"
     :options="permissionStore.getMenus"
     v-model:value="selectedKey"
+    :inverted="themeStore.getMenuInverted"
   />
 </template>
 

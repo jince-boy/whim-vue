@@ -6,37 +6,58 @@
   "description": "whim-vue icon",
   "glyphs": [
     {
-      "icon_id": "27896866",
-      "name": "narrow",
-      "font_class": "quanping-suoxiao",
+      "icon_id": "1459147",
+      "name": "导出",
+      "font_class": "daochu",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "4770754",
+      "name": "增加",
+      "font_class": "zengjia",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "14095364",
+      "name": "删除",
+      "font_class": "shanchu",
+      "unicode": "e79d",
+      "unicode_decimal": 59293
+    },
+    {
+      "icon_id": "10933928",
+      "name": "修改",
+      "font_class": "xiugai",
       "unicode": "e620",
       "unicode_decimal": 58912
     },
     {
-      "icon_id": "35340027",
-      "name": "全屏缩小",
-      "font_class": "quanpingsuoxiao",
+      "icon_id": "31313065",
+      "name": "字典模块",
+      "font_class": "zidianmokuai",
       "unicode": "e635",
       "unicode_decimal": 58933
     },
     {
-      "icon_id": "37297092",
-      "name": "全屏_缩小",
-      "font_class": "quanping_suoxiao",
-      "unicode": "e600",
-      "unicode_decimal": 58880
+      "icon_id": "19117457",
+      "name": "自动",
+      "font_class": "zidong",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
     },
     {
-      "icon_id": "37731489",
-      "name": "全屏缩小",
-      "font_class": "quanpingsuoxiao1",
-      "unicode": "e69c",
-      "unicode_decimal": 59036
+      "icon_id": "38971292",
+      "name": "自动投运-自动",
+      "font_class": "zidongtouyun-zidong",
+      "unicode": "e6d1",
+      "unicode_decimal": 59089
     },
     {
       "icon_id": "38207768",
       "name": "全屏缩小",
-      "font_class": "quanpingsuoxiao2",
+      "font_class": "quanpingsuoxiao",
       "unicode": "e7f4",
       "unicode_decimal": 59380
     },
@@ -389,13 +410,6 @@
       "font_class": "order-management-outline",
       "unicode": "e632",
       "unicode_decimal": 58930
-    },
-    {
-      "icon_id": "44837595",
-      "name": "加号",
-      "font_class": "add",
-      "unicode": "e607",
-      "unicode_decimal": 58887
     },
     {
       "icon_id": "44837596",

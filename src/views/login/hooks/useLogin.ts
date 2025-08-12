@@ -1,6 +1,6 @@
 import type { FormInst } from 'naive-ui'
-import type { LoginForm } from '@/views/login/logic/types.ts'
-import { login, getCaptcha } from '@/api/system/auth'
+import type { LoginForm } from '@/views/login/hooks/types.ts'
+import { login, fetchCaptcha } from '@/api/system/auth'
 import { useAuthStore } from '@/stores/modules/auth.ts'
 import router from '@/router'
 import createIcon from '@/components/icon/icon.ts'
@@ -34,21 +34,21 @@ export function useLogin() {
               decodeURIComponent((router.currentRoute.value.query.redirect as string) || '/'),
             )
           } else {
-            handleCaptcha()
+            getCaptcha()
             message.error(res.message)
           }
         })
       }
     })
   }
-  const handleCaptcha = () => {
-    getCaptcha().then((res) => {
+  const getCaptcha = () => {
+    fetchCaptcha().then((res) => {
       form.uuid = res.data.uuid
       captcha.value = res.data.base64
     })
   }
   onMounted(() => {
-    handleCaptcha()
+    getCaptcha()
   })
   return {
     formRef,
@@ -58,6 +58,6 @@ export function useLogin() {
     passwordIcon,
     captchaIcon,
     handleLogin,
-    handleCaptcha,
+    getCaptcha,
   }
 }

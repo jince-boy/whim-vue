@@ -3,6 +3,7 @@ import createIcon from '@/components/icon/icon.ts'
 import type { ScrollbarInst, DropdownOption } from 'naive-ui'
 import { useTabStore } from '@/stores/modules/tab.ts'
 import type { TabState } from '@/stores/type.ts'
+import { useThemeStore } from '@/stores/modules/theme.ts'
 
 defineOptions({
   name: 'LayoutTabBar',
@@ -13,6 +14,7 @@ const props = defineProps<{
   onRefresh: () => void
 }>()
 
+const themeStore = useThemeStore()
 const router = useRouter()
 const tabStore = useTabStore()
 const clickedTab = ref<TabState | null>(null)
@@ -209,10 +211,10 @@ watch(
             icon-placement="left"
             v-for="item in tabStore.getAllTabs"
             :key="item.name"
+            :render-icon="themeStore.getShowTabIcon ? createIcon(item.icon) : null"
             @click="handleTabClick(item.path)"
             @contextmenu="(e: MouseEvent) => handleContextMenu(e, item)"
           >
-<!--            :render-icon="createIcon(item.icon)"-->
             {{ item.title }}
             <i
               class="iconfont icon-closure tab-close"

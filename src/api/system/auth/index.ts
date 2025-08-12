@@ -17,6 +17,6 @@ export const logout = () => {
 /**
  * 获取验证码
  */
-export const getCaptcha = () => {
+export const fetchCaptcha = () => {
   return request<CaptchaResult>('/api/system/auth/captcha', RequestMethod.GET)
 }

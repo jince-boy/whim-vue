@@ -2,22 +2,25 @@
 import type { SafeMenuOption } from '@/utils/menu'
 import { usePermissionStore } from '@/stores/modules/permission.ts'
 import createIcon from '@/components/icon/icon.ts'
-import { useThemeStore } from '@/stores/modules/theme.ts'
 import screenfull from 'screenfull'
 import SearchComponent from '@/components/search/index.vue'
+import ThemeComponent from '@/components/theme/index.vue'
 
 defineOptions({
   name: 'LayoutHeader',
 })
 
 const route = useRoute()
-const themeStore = useThemeStore()
 const permissionStore = usePermissionStore()
 
 const searchShowModal = ref(false)
-
 const handleSearchClick = () => {
   searchShowModal.value = true
+}
+
+const themeShowModal = ref(false)
+const handleThemeClick = () => {
+  themeShowModal.value = true
 }
 const breadCrumbData = computed(() => {
   return findPathInMenu(permissionStore.getMenus, route.name as string)
@@ -85,7 +88,7 @@ const findPathInMenu = (menus: SafeMenuOption[], routeName: string): SafeMenuOpt
               <template #icon>
                 <n-icon
                   v-if="screenfull.isFullscreen"
-                  :component="createIcon('quanpingsuoxiao2')"
+                  :component="createIcon('quanpingsuoxiao')"
                 />
                 <n-icon v-else :component="createIcon('full-screen')" />
               </template>
@@ -93,22 +96,9 @@ const findPathInMenu = (menus: SafeMenuOption[], routeName: string): SafeMenuOpt
           </template>
           <span>全屏</span>
         </n-tooltip>
-
         <n-tooltip placement="bottom" trigger="hover">
           <template #trigger>
-            <n-button tertiary circle @click="themeStore.toggleTheme()">
-              <template #icon>
-                <n-icon v-if="themeStore.theme === 'light'" :component="createIcon('taiyang1')" />
-                <n-icon v-else :component="createIcon('yueliang')" />
-              </template>
-            </n-button>
-          </template>
-          <span>切换主题</span>
-        </n-tooltip>
-
-        <n-tooltip placement="bottom" trigger="hover">
-          <template #trigger>
-            <n-button tertiary circle>
+            <n-button tertiary circle @click="handleThemeClick">
               <template #icon>
                 <n-icon :component="createIcon('zhuti')" />
               </template>
@@ -128,6 +118,7 @@ const findPathInMenu = (menus: SafeMenuOption[], routeName: string): SafeMenuOpt
         </n-popover>
       </n-space>
       <search-component v-model="searchShowModal"></search-component>
+      <theme-component v-model="themeShowModal"></theme-component>
     </n-flex>
   </n-el>
 </template>

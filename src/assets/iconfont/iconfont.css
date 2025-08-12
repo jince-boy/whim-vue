@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4986031 */
-  src: url('iconfont.woff2?t=1754378291513') format('woff2');
+  src: url('iconfont.woff2?t=1754976730956') format('woff2');
 }
 
 .iconfont {
@@ -11,23 +11,35 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-quanping-suoxiao:before {
+.icon-daochu:before {
+  content: "\e637";
+}
+
+.icon-zengjia:before {
+  content: "\e640";
+}
+
+.icon-shanchu:before {
+  content: "\e79d";
+}
+
+.icon-xiugai:before {
   content: "\e620";
 }
 
-.icon-quanpingsuoxiao:before {
+.icon-zidianmokuai:before {
   content: "\e635";
 }
 
-.icon-quanping_suoxiao:before {
-  content: "\e600";
+.icon-zidong:before {
+  content: "\e63d";
 }
 
-.icon-quanpingsuoxiao1:before {
-  content: "\e69c";
+.icon-zidongtouyun-zidong:before {
+  content: "\e6d1";
 }
 
-.icon-quanpingsuoxiao2:before {
+.icon-quanpingsuoxiao:before {
   content: "\e7f4";
 }
 
@@ -229,10 +241,6 @@
 
 .icon-order-management-outline:before {
   content: "\e632";
-}
-
-.icon-add:before {
-  content: "\e607";
 }
 
 .icon-add-2:before {

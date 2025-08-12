@@ -33,26 +33,6 @@ export const constantRouter: RouteRecordRaw[] = [
           }
         },
       },
-      {
-        path: 'aaa',
-        component: modules[`/src/views/welcome/index.vue`],
-        name: 'aaa',
-        meta: {
-          title: '管理',
-          isMenu: true,
-          icon: 'icona02',
-        },
-      },
-      {
-        path: '/redirect/:path(.*)',
-        redirect: (to) => {
-          return {
-            path: '/' + to.params.path,
-            query: to.query,
-            hash: to.hash,
-          }
-        },
-      },
     ],
   },
   {

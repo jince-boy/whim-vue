@@ -1,3 +1,5 @@
+import type { GlobalThemeOverrides } from 'naive-ui'
+
 export interface MenuItem {
   name: string
   title: string
@@ -19,5 +21,19 @@ export interface TabState {
   name: string
   icon: string
   closeable: boolean
-  focused?: boolean;
+  focused?: boolean
+}
+
+export interface ThemeConfig {
+  theme: 'light' | 'dark'
+  themeOverrides: {
+    lightThemeOverrides: GlobalThemeOverrides
+    darkThemeOverrides: GlobalThemeOverrides
+  }
+  menuInverted: boolean // 菜单是否反转
+  showTabs: boolean // 显示标签
+  showTabIcon: boolean // 显示标签图标
+  showWatermark: boolean // 显示水印
+  watermarkText: string
+  showLogo: boolean
 }

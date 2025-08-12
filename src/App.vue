@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useThemeStore } from '@/stores/modules/theme.ts'
-import { lightThemeOverrides, darkThemeOverrides } from '@/config/NaiveTheme.ts'
-import { lightTheme, NThemeEditor } from 'naive-ui'
-
+import { NThemeEditor, zhCN, dateZhCN } from 'naive-ui'
 const themeStore = useThemeStore()
 </script>
 
 <template>
   <n-config-provider
+    :locale="zhCN"
+    :date-locale="dateZhCN"
     :theme="themeStore.getTheme"
-    :theme-overrides="themeStore.getTheme == lightTheme ? lightThemeOverrides : darkThemeOverrides"
+    :theme-overrides="themeStore.getThemeOverrides"
   >
     <n-theme-editor>
       <!--加载条-->

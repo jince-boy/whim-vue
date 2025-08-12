@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useLogin } from '@/views/login/logic/useLogin.ts'
-import { loginRules } from '@/views/login/logic/rule.ts'
+import { useLogin } from '@/views/login/hooks/useLogin.ts'
+import { loginRules } from '@/views/login/hooks/rule.ts'
 import systemSetting from '@/config/SystemSetting.ts'
 
 defineOptions({
   name: 'LoginPage',
 })
 
-const { formRef, form, captcha, userIcon, passwordIcon, captchaIcon, handleLogin, handleCaptcha } =
+const { formRef, form, captcha, userIcon, passwordIcon, captchaIcon, handleLogin, getCaptcha } =
   useLogin()
 </script>
 
@@ -66,7 +66,7 @@ const { formRef, form, captcha, userIcon, passwordIcon, captchaIcon, handleLogin
                 lazy
                 class="captcha"
                 alt="验证码"
-                @click="handleCaptcha"
+                @click="getCaptcha"
               />
             </n-space>
           </n-form-item>
@@ -84,10 +84,6 @@ const { formRef, form, captcha, userIcon, passwordIcon, captchaIcon, handleLogin
 </template>
 
 <style scoped lang="scss">
-//:deep(.n-input__placeholder) {
-//  line-height: 1.6;
-//}
-
 .login-container {
   height: 100vh;
   background-image: url('@/assets/images/login-bg.svg');
