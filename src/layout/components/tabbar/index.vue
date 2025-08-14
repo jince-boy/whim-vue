@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import createIcon from '@/components/icon/icon.ts'
+import { useIcon } from '@/components/icon/useIcon.ts'
 import type { ScrollbarInst, DropdownOption } from 'naive-ui'
 import { useTabStore } from '@/stores/modules/tab.ts'
 import type { TabState } from '@/stores/type.ts'
@@ -13,7 +13,7 @@ const props = defineProps<{
   onFullScreen: () => void
   onRefresh: () => void
 }>()
-
+const { createIcon } = useIcon()
 const themeStore = useThemeStore()
 const router = useRouter()
 const tabStore = useTabStore()

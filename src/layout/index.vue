@@ -15,6 +15,7 @@ const themeStore = useThemeStore()
 
 // tab-bar 调用内容全屏的方法
 const appMainRef = ref()
+
 const toggleFullScreen = () => {
   const el = appMainRef.value?.appMainRef
   if (el && screenfull.isEnabled) {

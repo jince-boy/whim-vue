@@ -3,8 +3,9 @@ import type { LoginForm } from '@/views/login/hooks/types.ts'
 import { login, fetchCaptcha } from '@/api/system/auth'
 import { useAuthStore } from '@/stores/modules/auth.ts'
 import router from '@/router'
-import createIcon from '@/components/icon/icon.ts'
+import { useIcon } from '@/components/icon/useIcon.ts'
 
+const { createIcon } = useIcon()
 const userIcon = createIcon('yonghu')
 const passwordIcon = createIcon('mima')
 const captchaIcon = createIcon('yanzhengma')

@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 defineOptions({
-  name: 'IconComponent',
+  name: 'Icon',
 })
 
 interface Props {
@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 const iconClass = computed(() => `iconfont icon-${props.name}`)
 const iconStyle = computed(() => ({
   fontSize: `${props.size}px`,
-  color: props.color
+  color: props.color,
 }))
 </script>
 

@@ -8,6 +8,7 @@ declare module 'vue-router' {
     title?: string
     keepAlive?: boolean
     isMenu?: boolean
+    isShow?: boolean
     icon?: string
     visible?: 0 | 1
   }

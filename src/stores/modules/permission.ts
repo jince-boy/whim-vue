@@ -31,10 +31,12 @@ export const usePermissionStore = defineStore('permission', {
           const route: RouteRecordRaw = {
             path: menu.path,
             name: menu.name,
+            props: true,
             meta: {
               title: menu.title,
               keepAlive: menu.keepAlive !== 0,
-              isMenu: menu.visible == 0,
+              isMenu: true,
+              isShow: menu.visible !== 1,
               icon: menu.icon,
             },
             children: [],

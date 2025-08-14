@@ -1,6 +1,6 @@
 import { type RouteRecordRaw, RouterLink } from 'vue-router'
 import { type MenuOption, NIcon } from 'naive-ui'
-import createIcon from '@/components/icon/icon.ts'
+import { useIcon } from '@/components/icon/useIcon.ts'
 
 export type SafeMenuOption = Omit<MenuOption, 'children'> & {
   name?: string
@@ -8,6 +8,7 @@ export type SafeMenuOption = Omit<MenuOption, 'children'> & {
   children?: SafeMenuOption[]
 }
 
+const { createIcon } = useIcon()
 /**
  * 路径拼接
  * @param base
@@ -29,7 +30,8 @@ export const buildMenus = (routes: RouteRecordRaw[], basePath = ''): SafeMenuOpt
     const fullPath = joinPaths(basePath, route.path)
     const meta = route.meta || {}
     const title = meta.title || '未命名'
-    const isMenu = meta.isMenu === true
+    const isMenu = meta.isMenu
+    const isShow = meta.isShow ?? true
     const hasChildren = Array.isArray(route.children) && route.children.length > 0
     const hasComponent = !!route.component
     const key = typeof route.name === 'string' ? route.name : fullPath
@@ -45,6 +47,7 @@ export const buildMenus = (routes: RouteRecordRaw[], basePath = ''): SafeMenuOpt
             label: title,
             key,
             icon,
+            show: isShow,
             children: childrenMenu,
             name: title,
             path: '',
@@ -54,6 +57,7 @@ export const buildMenus = (routes: RouteRecordRaw[], basePath = ''): SafeMenuOpt
             label: () => h(RouterLink, { to: fullPath }, { default: () => title }),
             key,
             icon,
+            show: isShow,
             name: title,
             path: fullPath,
           })
@@ -63,6 +67,7 @@ export const buildMenus = (routes: RouteRecordRaw[], basePath = ''): SafeMenuOpt
           label: () => h(RouterLink, { to: fullPath }, { default: () => title }),
           key,
           icon,
+          show: isShow,
           name: title,
           path: fullPath,
         })

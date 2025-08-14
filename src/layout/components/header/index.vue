@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SafeMenuOption } from '@/utils/menu'
 import { usePermissionStore } from '@/stores/modules/permission.ts'
-import createIcon from '@/components/icon/icon.ts'
+import { useIcon } from '@/components/icon/useIcon.ts'
 import screenfull from 'screenfull'
 import SearchComponent from '@/components/search/index.vue'
 import ThemeComponent from '@/components/theme/index.vue'
@@ -10,6 +10,7 @@ defineOptions({
   name: 'LayoutHeader',
 })
 
+const { createIcon } = useIcon()
 const route = useRoute()
 const permissionStore = usePermissionStore()
 
@@ -19,9 +20,11 @@ const handleSearchClick = () => {
 }
 
 const themeShowModal = ref(false)
+
 const handleThemeClick = () => {
   themeShowModal.value = true
 }
+
 const breadCrumbData = computed(() => {
   return findPathInMenu(permissionStore.getMenus, route.name as string)
 })
@@ -86,10 +89,7 @@ const findPathInMenu = (menus: SafeMenuOption[], routeName: string): SafeMenuOpt
           <template #trigger>
             <n-button tertiary circle @click="screenfull.toggle()">
               <template #icon>
-                <n-icon
-                  v-if="screenfull.isFullscreen"
-                  :component="createIcon('quanpingsuoxiao')"
-                />
+                <n-icon v-if="screenfull.isFullscreen" :component="createIcon('quanpingsuoxiao')" />
                 <n-icon v-else :component="createIcon('full-screen')" />
               </template>
             </n-button>

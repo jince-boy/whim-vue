@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import createIcon from '@/components/icon/icon.ts'
+import { useIcon } from '@/components/icon/useIcon.ts'
 import { usePermissionStore } from '@/stores/modules/permission.ts'
 import type { SafeMenuOption } from '@/utils/menu'
 import Result from '@/components/search/result.vue'
@@ -14,6 +14,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
+
+const { createIcon } = useIcon()
 
 const searchShowModal = computed({
   get: () => props.modelValue,

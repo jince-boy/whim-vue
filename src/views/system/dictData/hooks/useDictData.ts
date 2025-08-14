@@ -1,23 +1,28 @@
-import { type DataTableColumn, NButton, NSpace, useMessage } from 'naive-ui'
 import {
-  deleteDictType,
-  fetchDictTypeDetail,
-  fetchDictTypePage,
-  insertDictType,
-  updateDictType,
+  deleteDictData,
+  fetchDictDataDetail,
+  fetchDictDataPage,
+  insertDictData,
+  updateDictData,
 } from '@/api/system/dict'
-import type { DictType } from '@/views/system/dictType/hooks/types.ts'
-import editForm from '@/views/system/dictType/form.vue'
+import { type DataTableColumn, NButton, NSpace, NTag, useMessage } from 'naive-ui'
+import type { DictData } from '@/views/system/dictData/hooks/types.ts'
 import { useFormDialog } from '@/components/dialog/useFormDialog.ts'
-export function useDictType() {
+import editForm from '@/views/system/dictData/form.vue'
+
+export interface DictDataProps {
+  type: string
+}
+
+export function useDictData(props: DictDataProps) {
   const router = useRouter()
   const message = useMessage()
   const { openFormDialog, openDeleteDialog } = useFormDialog()
 
   const form = reactive({
-    name: '',
-    type: '',
+    label: '',
   })
+
   const pagination = reactive({
     page: 1,
     pageSize: 10,
@@ -30,27 +35,30 @@ export function useDictType() {
       type: 'selection',
     },
     {
-      title: '字典名称',
-      key: 'name',
+      title: '字典标签',
+      key: 'label',
+      align: 'center',
+      render(row: object) {
+        const dictData = row as DictData
+        return h(
+          NTag,
+          {
+            bordered: false,
+            type: dictData.listClass,
+          },
+          { default: () => dictData.label },
+        )
+      },
+    },
+    {
+      title: '字典键值',
+      key: 'value',
       align: 'center',
     },
     {
-      title: '字典类型',
-      key: 'type',
+      title: '排序',
+      key: 'sort',
       align: 'center',
-      render(row) {
-        return h(
-          NButton,
-          {
-            text: true,
-            type: 'primary',
-            onClick: () => {
-              router.push(`/system/dictData/${row.type}`)
-            },
-          },
-          { default: () => row.type },
-        )
-      },
     },
     {
       title: '备注',
@@ -67,7 +75,7 @@ export function useDictType() {
       key: 'action',
       align: 'center',
       render(row: object) {
-        const dictType = row as DictType
+        const dictData = row as DictData
         return h(NSpace, { justify: 'center' }, () => [
           h(
             NButton,
@@ -75,7 +83,7 @@ export function useDictType() {
               text: true,
               type: 'primary',
               onClick: async () => {
-                await openEditDialog(dictType.id)
+                await openEditDialog(dictData.id)
               },
             },
             { default: () => '修改' },
@@ -86,7 +94,7 @@ export function useDictType() {
               text: true,
               type: 'primary',
               onClick: () => {
-                removeDictType(dictType)
+                removeDictData(dictData)
               },
             },
             { default: () => '删除' },
@@ -104,24 +112,33 @@ export function useDictType() {
    * 获取字典类型详情
    * @param id
    */
-  const getDictTypeDetail = async (id: number | string): Promise<DictType> => {
-    const res = await fetchDictTypeDetail({ id })
-    return res.data as DictType
+  const getDictDataDetail = async (id: number | string): Promise<DictData> => {
+    const res = await fetchDictDataDetail({ id })
+    return res.data as DictData
   }
 
   /**
-   * 打开新增字典对话框
+   * 打开新增字典数据对话框
    */
   const openAddDialog = () => {
-    openFormDialog<DictType>({
-      title: '新建字典',
+    openFormDialog<DictData>({
+      title: '新建字典数据',
+      model: {
+        id: '',
+        dictType: props.type,
+        label: '',
+        value: '',
+        listClass: 'default',
+        sort: 0,
+        remark: '',
+      },
       formComponent: editForm,
       onSubmit: async (formModel, dialog) => {
-        insertDictType(formModel).then((res) => {
+        insertDictData(formModel).then((res) => {
           if (res.code == 200) {
             dialog.destroy()
             message.success(`${dialog.title}成功`)
-            getDictTypePage()
+            getDictDataPage()
           } else {
             message.error(res.message)
           }
@@ -131,21 +148,21 @@ export function useDictType() {
   }
 
   /**
-   * 打开修改字典对话框
+   * 打开修改字典数据对话框
    * @param id
    */
   const openEditDialog = async (id: string | number) => {
-    const data = await getDictTypeDetail(id)
-    openFormDialog<DictType>({
+    const data = await getDictDataDetail(id)
+    openFormDialog<DictData>({
       title: '修改字典',
       formComponent: editForm,
       model: data,
       onSubmit: async (formModel, dialog) => {
-        updateDictType(formModel).then((res) => {
+        updateDictData(formModel).then((res) => {
           if (res.code == 200) {
             dialog.destroy()
             message.success(`${dialog.title}成功`)
-            getDictTypePage()
+            getDictDataPage()
           } else {
             message.error(res.message)
           }
@@ -158,14 +175,14 @@ export function useDictType() {
    * 删除字典类型
    * @param row
    */
-  const removeDictType = (row: DictType) => {
+  const removeDictData = (row: DictData) => {
     openDeleteDialog({
-      content: `确定要删除${row.name}吗？删除后无法恢复！`,
+      content: `确定要删除${row.label}吗？删除后无法恢复！`,
       onSubmit: () => {
-        deleteDictType({ dictTypeIds: [row.id] }).then((res) => {
+        deleteDictData({ dictDataIds: [row.id] }).then((res) => {
           if (res.code == 200) {
             message.success(`删除成功`)
-            getDictTypePage()
+            getDictDataPage()
           } else {
             message.error(res.message)
           }
@@ -176,14 +193,14 @@ export function useDictType() {
   /**
    * 批量删除字典类型
    */
-  const removeDictTypeBatch = (ids: Array<string | number>) => {
+  const removeDictDataBatch = (ids: Array<string | number>) => {
     openDeleteDialog({
       content: `确定要删除选中的 ${ids.length} 个字典类型吗？删除后无法恢复！`,
       onSubmit: () => {
-        deleteDictType({ dictTypeIds: ids }).then((res) => {
+        deleteDictData({ dictDataIds: ids }).then((res) => {
           if (res.code == 200) {
             message.success(`删除成功`)
-            getDictTypePage()
+            getDictDataPage()
           } else {
             message.error(res.message)
           }
@@ -191,13 +208,15 @@ export function useDictType() {
       },
     })
   }
+
   /**
-   * 获取字典类型分页数据
+   * 获取字典数据分页
    */
-  const getDictTypePage = () => {
+  const getDictDataPage = () => {
     loading.value = true
-    fetchDictTypePage({
+    fetchDictDataPage({
       ...form,
+      dictType: props.type,
       pageNum: pagination.page,
       pageSize: pagination.pageSize,
     }).then((res) => {
@@ -210,18 +229,23 @@ export function useDictType() {
     })
   }
 
+  const backDictTypePage = () => {
+    router.back()
+  }
   onMounted(() => {
-    getDictTypePage()
+    getDictDataPage()
   })
+
   return {
     form,
+    pagination,
     tableColumns,
     tableData,
-    pagination,
     loading,
-    getDictTypePage,
+    getDictDataPage,
     openAddDialog,
     openEditDialog,
-    removeDictTypeBatch,
+    removeDictDataBatch,
+    backDictTypePage
   }
 }
