@@ -33,14 +33,23 @@ export interface BaseTableProps {
   pagination: Pagination
   /** 行唯一标识字段名或获取行key的函数 */
   rowKey?: string | ((row: object) => string | number)
+  /** 按钮权限控制 */
+  addButtonPermission?: string[]
+  addButtonRole?: string[]
+  editButtonPermission?: string[]
+  editButtonRole?: string[]
+  deleteButtonPermission?: string[]
+  deleteButtonRole?: string[]
+  exportButtonPermission?: string[]
+  exportButtonRole?: string[]
   /** 是否显示新增按钮，默认显示 */
-  addButton?: boolean
+  addButtonShow?: boolean
   /** 是否显示编辑按钮，默认显示 */
-  editButton?: boolean
+  editButtonShow?: boolean
   /** 是否显示删除按钮，默认显示 */
-  deleteButton?: boolean
+  deleteButtonShow?: boolean
   /** 是否显示导出按钮，默认显示 */
-  exportButton?: boolean
+  exportButtonShow?: boolean
   /** 是否显示加载中 */
   loading?: boolean
 }

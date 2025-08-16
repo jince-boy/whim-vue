@@ -1,9 +1,11 @@
 import { type DataTableColumn, NButton, NSpace, useMessage } from 'naive-ui'
 import {
   deleteDictType,
+  exportDictType,
   fetchDictTypeDetail,
   fetchDictTypePage,
   insertDictType,
+  resetDictCache,
   updateDictType,
 } from '@/api/system/dict'
 import type { DictType } from '@/views/system/dictType/hooks/types.ts'
@@ -191,6 +193,24 @@ export function useDictType() {
       },
     })
   }
+
+  /**
+   * 导出字典类型
+   */
+  const exportExcel = async () => {
+    await exportDictType()
+  }
+
+  /**
+   * 重置字典缓存
+   */
+  const handleResetDictCache = () => {
+    resetDictCache().then((res) => {
+      if (res.code == 200) {
+        message.success(`重置成功`)
+      }
+    })
+  }
   /**
    * 获取字典类型分页数据
    */
@@ -223,5 +243,7 @@ export function useDictType() {
     openAddDialog,
     openEditDialog,
     removeDictTypeBatch,
+    handleResetDictCache,
+    exportExcel
   }
 }

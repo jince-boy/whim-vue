@@ -6,6 +6,13 @@
   "description": "whim-vue icon",
   "glyphs": [
     {
+      "icon_id": "7157823",
+      "name": "返回",
+      "font_class": "fanhui",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
       "icon_id": "1459147",
       "name": "导出",
       "font_class": "daochu",

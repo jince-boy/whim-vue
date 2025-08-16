@@ -36,4 +36,5 @@ export interface ThemeConfig {
   showWatermark: boolean // 显示水印
   watermarkText: string
   showLogo: boolean
+  tabStyle: 'button' | 'tag'
 }

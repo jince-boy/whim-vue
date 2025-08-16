@@ -2,10 +2,12 @@
 import SearchForm from '@/components/form/SearchForm.vue'
 import CrudTable from '@/components/table/CrudTable.vue'
 import { useDictType } from '@/views/system/dictType/hooks/useDictType.ts'
+import { useIcon } from '@/components/icon/useIcon.ts'
 
 defineOptions({
   name: 'SysDictType',
 })
+const { createIcon } = useIcon()
 const {
   form,
   tableColumns,
@@ -16,6 +18,8 @@ const {
   openAddDialog,
   openEditDialog,
   removeDictTypeBatch,
+  handleResetDictCache,
+  exportExcel,
 } = useDictType()
 </script>
 
@@ -41,13 +45,29 @@ const {
       :data="tableData"
       :pagination="pagination"
       :loading="loading"
+      :add-button-permission="['system:dictType:add']"
+      :edit-button-permission="['system:dictType:edit']"
+      :delete-button-permission="['system:dictType:delete']"
+      :export-button-permission="['system:dictType:export']"
       @refresh="getDictTypePage"
       @update:pageNum="getDictTypePage"
       @update:pageSize="getDictTypePage"
       @add="openAddDialog"
       @edit="openEditDialog"
       @delete="removeDictTypeBatch"
-    ></CrudTable>
+      @export="exportExcel"
+    >
+      <template #action-buttons>
+        <n-button
+          v-permission="['system:dictType:reset']"
+          type="error"
+          :render-icon="createIcon('refresh-2')"
+          @click="handleResetDictCache"
+          >刷新缓存</n-button
+        >
+      </template>
+    </CrudTable>
+    <!--    <div></div>-->
   </n-space>
 </template>
 

@@ -11,6 +11,17 @@ const props = defineProps<{
   modelValue: boolean
 }>()
 
+const options = [
+  {
+    label: '按钮风格',
+    value: 'button',
+  },
+  {
+    label: '标签风格',
+    value: 'tag',
+  },
+]
+
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>()
@@ -81,6 +92,16 @@ const handleTabChange = (value: string | number) => {
           <span>显示标签图标</span>
           <n-switch :value="themeStore.getShowTabIcon" @update:value="themeStore.setShowTabIcon" />
         </n-flex>
+        <n-space align="center" justify="space-between">
+          <span>标签风格</span>
+          <n-select
+            size="small"
+            style="width: 200px"
+            :value="themeStore.getTabStyle"
+            :options="options"
+            @update:value="themeStore.setTabStyle"
+          />
+        </n-space>
         <n-flex justify="space-between" align="center">
           <span>显示水印</span>
           <n-switch

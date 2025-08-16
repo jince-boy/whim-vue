@@ -2,13 +2,14 @@
 import { type DictDataProps, useDictData } from '@/views/system/dictData/hooks/useDictData.ts'
 import SearchForm from '@/components/form/SearchForm.vue'
 import CrudTable from '@/components/table/CrudTable.vue'
+import { useIcon } from '@/components/icon/useIcon.ts'
 
 defineOptions({
   name: 'SysDictData',
 })
 
 const props = defineProps<DictDataProps>()
-
+const { createIcon } = useIcon()
 const {
   form,
   pagination,
@@ -20,6 +21,7 @@ const {
   openEditDialog,
   removeDictDataBatch,
   backDictTypePage,
+  exportExcel,
 } = useDictData(props)
 </script>
 
@@ -42,15 +44,22 @@ const {
       :data="tableData"
       :pagination="pagination"
       :loading="loading"
+      :add-button-permission="['system:dictData:add']"
+      :edit-button-permission="['system:dictData:edit']"
+      :delete-button-permission="['system:dictData:delete']"
+      :export-button-permission="['system:dictData:export']"
       @refresh="getDictDataPage"
       @update:pageNum="getDictDataPage"
       @update:pageSize="getDictDataPage"
       @add="openAddDialog"
       @edit="openEditDialog"
       @delete="removeDictDataBatch"
+      @export="exportExcel"
     >
       <template #action-buttons>
-        <n-button type="error" @click="backDictTypePage">关闭</n-button>
+        <n-button type="error" @click="backDictTypePage" :render-icon="createIcon('fanhui')">
+          返回
+        </n-button>
       </template>
     </CrudTable>
   </n-space>

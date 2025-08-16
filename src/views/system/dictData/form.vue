@@ -71,7 +71,6 @@ defineExpose({
     </n-form-item>
     <n-form-item label="回显样式" path="listClass">
       <n-select
-        :default-value="options[0]"
         v-model:value="formModel.listClass"
         :options="options"
         placeholder="请选择回显样式"

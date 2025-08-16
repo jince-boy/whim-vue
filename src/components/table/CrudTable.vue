@@ -11,10 +11,10 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<BaseTableProps>(), {
-  addButton: true,
-  editButton: true,
-  deleteButton: true,
-  exportButton: true,
+  addButtonShow: true,
+  editButtonShow: true,
+  deleteButtonShow: true,
+  exportButtonShow: true,
 })
 const emit = defineEmits<BaseTableEmits>()
 const { createIcon } = useIcon()
@@ -46,7 +46,8 @@ const {
         <!-- 左侧按钮 -->
         <n-space>
           <n-button
-            v-if="addButton"
+            v-permission="props.addButtonPermission"
+            v-if="addButtonShow"
             type="primary"
             :render-icon="createIcon('zengjia')"
             @click="emit('add')"
@@ -54,7 +55,8 @@ const {
             新增
           </n-button>
           <n-button
-            v-if="editButton"
+            v-permission="props.editButtonPermission"
+            v-if="editButtonShow"
             type="info"
             :render-icon="createIcon('xiugai')"
             @click="emit('edit', selectedRowKeys[0])"
@@ -63,7 +65,8 @@ const {
             修改
           </n-button>
           <n-button
-            v-if="deleteButton"
+            v-permission="props.deleteButtonPermission"
+            v-if="deleteButtonShow"
             type="error"
             :render-icon="createIcon('shanchu')"
             @click="emit('delete', selectedRowKeys)"
@@ -72,7 +75,8 @@ const {
             删除
           </n-button>
           <n-button
-            v-if="exportButton"
+            v-permission="props.exportButtonPermission"
+            v-if="exportButtonShow"
             type="warning"
             :render-icon="createIcon('daochu')"
             @click="emit('export')"

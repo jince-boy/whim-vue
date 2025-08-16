@@ -16,6 +16,7 @@ function getDefaultThemeConfig(): ThemeConfig {
     showWatermark: false,
     watermarkText: 'whim-vue',
     showLogo: true,
+    tabStyle: 'button',
   }
 }
 
@@ -53,7 +54,10 @@ export const useThemeStore = defineStore('theme', {
     },
     getShowLogo(state): boolean {
       return state.config.showLogo
-    }
+    },
+    getTabStyle(state): 'button' | 'tag' {
+      return state.config.tabStyle
+    },
   },
   actions: {
     updateConfig(partialConfig?: Partial<ThemeConfig>) {
@@ -151,12 +155,15 @@ export const useThemeStore = defineStore('theme', {
     setShowLogo(value: boolean) {
       this.updateConfig({ showLogo: value })
     },
+    setTabStyle(value: 'button' | 'tag') {
+      this.updateConfig({ tabStyle: value })
+    },
     resetToDefault() {
       localStorage.removeItem('themeConfig')
 
       this.config = getDefaultThemeConfig()
 
       localStorage.setItem('themeConfig', JSON.stringify(this.config))
-    }
+    },
   },
 })

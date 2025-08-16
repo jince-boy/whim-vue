@@ -5,6 +5,7 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios'
 import type { ApiResponse } from '@/utils/http/type.ts'
+import { saveAs } from 'file-saver'
 import router from '@/router'
 import { useAuthStore } from '@/stores/modules/auth.ts'
 
@@ -34,6 +35,9 @@ axiosInstance.interceptors.request.use(
  */
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
+    if (response.config.responseType === 'blob') {
+      return response // blob 类型直接返回完整响应
+    }
     if (response.data.code === 401) {
       window['$message'].warning('登录已过期，请重新登录')
       useAuthStore().logout()
@@ -73,5 +77,42 @@ export const request = <T>(
   }
   return axiosInstance(finalConfig) as Promise<ApiResponse<T>>
 }
-
+/**
+ * 下载文件
+ * @param url 文件请求地址
+ * @param fileName 保存的文件名
+ * @param config 可选的 Axios 配置
+ */
+export const downloadFile = async (
+  url: string,
+  fileName?: string | null,
+  config?: AxiosRequestConfig,
+): Promise<void> => {
+  try {
+    const response = await axiosInstance({
+      url,
+      method: 'GET',
+      responseType: 'blob', // 关键：将响应处理为 Blob
+      ...config,
+    })
+    if (!fileName) {
+      const disposition = response.headers['content-disposition']
+      if (disposition) {
+        const match = disposition.match(/filename\*=UTF-8''(.+)|filename="(.+)"/i)
+        if (match) {
+          fileName = decodeURIComponent(match[1] || match[2])
+        }
+      }
+    }
+    // 如果还是没有文件名，默认给一个名字
+    if (!fileName) {
+      fileName = `download-${new Date().getTime()}`
+    }
+    // 使用 file-saver 保存文件
+    saveAs(response.data, fileName)
+  } catch (error) {
+    console.error('文件下载失败', error)
+    return Promise.reject(error)
+  }
+}
 export default axiosInstance

@@ -1,4 +1,4 @@
-import { request, RequestMethod } from '@/utils/http'
+import { request, downloadFile, RequestMethod } from '@/utils/http'
 import type {
   DictDataPageResult,
   DictDataResult,
@@ -26,6 +26,14 @@ export const deleteDictType = (params: object) => {
   return request('/api/system/dictType/delete', RequestMethod.DELETE, { params })
 }
 
+export const resetDictCache = () => {
+  return request('/api/system/dictType/reset', RequestMethod.DELETE)
+}
+
+export const exportDictType = () => {
+  return downloadFile('/api/system/dictType/export')
+}
+
 export const fetchDictDataPage = (params: object) => {
   return request<DictDataPageResult>('/api/system/dictData/page', RequestMethod.GET, { params })
 }
@@ -44,4 +52,12 @@ export const updateDictData = (data: object) => {
 
 export const deleteDictData = (params: object) => {
   return request('/api/system/dictData/delete', RequestMethod.DELETE, { params })
+}
+
+export const fetchDictDataListByDictType = (params: object) => {
+  return request('/api/system/dictData/type/' + params, RequestMethod.GET)
+}
+
+export const exportDictData = (params: object) => {
+  return downloadFile('/api/system/dictData/export', null, { params })
 }

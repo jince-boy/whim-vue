@@ -1,5 +1,6 @@
 import {
   deleteDictData,
+  exportDictData,
   fetchDictDataDetail,
   fetchDictDataPage,
   insertDictData,
@@ -210,6 +211,15 @@ export function useDictData(props: DictDataProps) {
   }
 
   /**
+   * 导出字典数据
+   */
+  const exportExcel = async () => {
+    await exportDictData({
+      dictType: props.type,
+    })
+  }
+
+  /**
    * 获取字典数据分页
    */
   const getDictDataPage = () => {
@@ -246,6 +256,7 @@ export function useDictData(props: DictDataProps) {
     openAddDialog,
     openEditDialog,
     removeDictDataBatch,
-    backDictTypePage
+    backDictTypePage,
+    exportExcel
   }
 }

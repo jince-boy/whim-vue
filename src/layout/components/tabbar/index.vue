@@ -202,7 +202,24 @@ watch(
         @click="handleScroll('left')"
       />
       <n-scrollbar trigger="none" ref="scrollbar" x-scrollable content-style="height:100%">
-        <n-flex align="center" class="tab-box" :wrap="false">
+        <n-flex v-if="themeStore.getTabStyle==='tag'" align="center" class="tab-box" :wrap="false">
+          <n-tag
+            v-for="item in tabStore.getAllTabs"
+            :key="item.name"
+            :type="item.focused ? 'primary' : 'default'"
+            :bordered="false"
+            :closable="item.closeable"
+            @click="handleTabClick(item.path)"
+            @contextmenu="(e: MouseEvent) => handleContextMenu(e, item)"
+            @close="handleCloseTab(item.name)"
+          >
+            {{ item.title }}
+            <template #icon v-if="themeStore.getShowTabIcon">
+              <n-icon size="18" :component="createIcon(item.icon)" />
+            </template>
+          </n-tag>
+        </n-flex>
+        <n-flex v-else align="center" class="tab-box" :wrap="false">
           <n-button
             :type="item.focused ? 'primary' : 'default'"
             size="small"
@@ -222,17 +239,17 @@ watch(
               @click.stop="handleCloseTab(item.name)"
             ></i>
           </n-button>
-          <n-dropdown
-            placement="bottom-start"
-            trigger="manual"
-            :x="x"
-            :y="y"
-            :options="dropdownOptions"
-            :show="showDropdown"
-            :on-clickoutside="onClickOutside"
-            @select="handleSelect"
-          />
         </n-flex>
+        <n-dropdown
+          placement="bottom-start"
+          trigger="manual"
+          :x="x"
+          :y="y"
+          :options="dropdownOptions"
+          :show="showDropdown"
+          :on-clickoutside="onClickOutside"
+          @select="handleSelect"
+        />
       </n-scrollbar>
       <n-button
         quaternary
