@@ -15,6 +15,7 @@ const authStore = useAuthStore()
 export function useLogin() {
   const message = useMessage()
   const formRef = ref<FormInst | null>(null)
+  const spinShow = ref(false)
   const form = reactive<LoginForm>({
     username: '',
     password: '',
@@ -27,17 +28,21 @@ export function useLogin() {
   const handleLogin = () => {
     formRef.value?.validate((errors) => {
       if (!errors) {
+        spinShow.value = true
         login(form).then(async (res) => {
           if (res.code == 200) {
             message.success(res.message)
-            await authStore.login(res.data.token, form.rememberMe)
+            authStore.login(res.data.token, form.rememberMe)
             await router.push(
               decodeURIComponent((router.currentRoute.value.query.redirect as string) || '/'),
             )
           } else {
+            console.log(321)
             getCaptcha()
             message.error(res.message)
           }
+          console.log(123)
+          spinShow.value = false
         })
       }
     })
@@ -60,5 +65,6 @@ export function useLogin() {
     captchaIcon,
     handleLogin,
     getCaptcha,
+    spinShow,
   }
 }

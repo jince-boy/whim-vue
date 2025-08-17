@@ -39,7 +39,7 @@ axiosInstance.interceptors.response.use(
       return response // blob 类型直接返回完整响应
     }
     if (response.data.code === 401) {
-      window['$message'].warning('登录已过期，请重新登录')
+      window['$message'].warning(response.data.message)
       useAuthStore().logout()
       const redirect = window.location.pathname + window.location.search
       router.replace({
@@ -48,7 +48,6 @@ axiosInstance.interceptors.response.use(
           redirect: encodeURIComponent(redirect),
         },
       })
-      return Promise.reject(response.data)
     }
     return response.data
   },

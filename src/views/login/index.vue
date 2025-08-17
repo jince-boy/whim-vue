@@ -7,8 +7,17 @@ defineOptions({
   name: 'LoginPage',
 })
 
-const { formRef, form, captcha, userIcon, passwordIcon, captchaIcon, handleLogin, getCaptcha } =
-  useLogin()
+const {
+  formRef,
+  form,
+  captcha,
+  userIcon,
+  passwordIcon,
+  captchaIcon,
+  handleLogin,
+  getCaptcha,
+  spinShow,
+} = useLogin()
 </script>
 
 <template>
@@ -40,6 +49,7 @@ const { formRef, form, captcha, userIcon, passwordIcon, captchaIcon, handleLogin
               type="password"
               v-model:value="form.password"
               placeholder="密码"
+              show-password-on="mousedown"
               :input-props="{ autocomplete: 'new-password' }"
             >
               <template #prefix>
@@ -73,9 +83,13 @@ const { formRef, form, captcha, userIcon, passwordIcon, captchaIcon, handleLogin
           <n-form-item>
             <n-checkbox v-model:checked="form.rememberMe">记住密码</n-checkbox>
           </n-form-item>
-          <n-form-item>
-            <n-button type="primary" class="login-button" @click="handleLogin">登录</n-button>
-          </n-form-item>
+          <n-spin :show="spinShow">
+            <n-form-item :show-feedback="false">
+              <n-button type="primary" class="login-button" style="width: 100%" @click="handleLogin"
+                >登录</n-button
+              >
+            </n-form-item>
+          </n-spin>
         </n-form>
       </n-card>
       <n-el class="copyright">{{ systemSetting.copyright }}</n-el>
