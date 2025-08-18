@@ -18,7 +18,6 @@ router.beforeEach(async (to) => {
       if (!useUserStore().hasUserInfo) {
         await useUserStore().getUserInfo()
         usePermissionStore().generateRoutes(useUserStore().menus)
-        console.log(usePermissionStore().getDynamicRoutes)
         usePermissionStore().getDynamicRoutes.forEach((route) => {
           router.addRoute('Layout', route)
         })

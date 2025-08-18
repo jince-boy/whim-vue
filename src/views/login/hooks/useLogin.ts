@@ -37,11 +37,9 @@ export function useLogin() {
               decodeURIComponent((router.currentRoute.value.query.redirect as string) || '/'),
             )
           } else {
-            console.log(321)
             getCaptcha()
             message.error(res.message)
           }
-          console.log(123)
           spinShow.value = false
         })
       }

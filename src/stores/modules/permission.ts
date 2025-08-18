@@ -82,7 +82,7 @@ export const usePermissionStore = defineStore('permission', {
      */
     generateMenus() {
       this.menus = [
-        // ...buildMenus(constantRouter),
+        ...buildMenus(constantRouter),
         ...buildMenus(this.dynamicRoutes),
       ] as SafeMenuOption[]
       console.log(...buildMenus(this.dynamicRoutes))
