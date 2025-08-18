@@ -25,58 +25,59 @@ export const joinPaths = (base: string, path: string): string => {
  * @param basePath
  */
 export const buildMenus = (routes: RouteRecordRaw[], basePath = ''): SafeMenuOption[] => {
-  const result: SafeMenuOption[] = []
-  for (const route of routes) {
-    const fullPath = joinPaths(basePath, route.path)
-    const meta = route.meta || {}
-    const title = meta.title || '未命名'
-    const isMenu = meta.isMenu
-    const isShow = meta.isShow ?? true
-    const hasChildren = Array.isArray(route.children) && route.children.length > 0
-    const hasComponent = !!route.component
-    const key = typeof route.name === 'string' ? route.name : fullPath
-    const icon = meta.icon
-      ? () => h(NIcon, null, { default: createIcon(meta.icon as string) }) // 直接使用 createIcon 返回的函数
-      : undefined
+  return routes.reduce<SafeMenuOption[]>((result, route) => {
+    const fullPath = joinPaths(basePath, route.path);
+    const meta = route.meta || {};
+    const {
+      title = '未命名',
+      isMenu = false,
+      isShow = true,
+      icon: iconName
+    } = meta;
 
-    if (isMenu) {
-      if (hasChildren) {
-        const childrenMenu = buildMenus(route.children!, fullPath)
-        if (childrenMenu.length > 0) {
-          result.push({
-            label: title,
-            key,
-            icon,
-            show: isShow,
-            children: childrenMenu,
-            name: title,
-            path: '',
-          })
-        } else if (hasComponent) {
-          result.push({
-            label: () => h(RouterLink, { to: fullPath }, { default: () => title }),
-            key,
-            icon,
-            show: isShow,
-            name: title,
-            path: fullPath,
-          })
-        }
-      } else if (hasComponent) {
-        result.push({
-          label: () => h(RouterLink, { to: fullPath }, { default: () => title }),
-          key,
-          icon,
-          show: isShow,
-          name: title,
-          path: fullPath,
-        })
-      }
-    } else if (hasChildren) {
-      // 非菜单但有子路由，继续递归
-      result.push(...buildMenus(route.children!, fullPath))
+    const hasChildren = Array.isArray(route.children) && route.children.length > 0;
+    const key = typeof route.name === 'string' ? route.name : fullPath;
+    const icon = iconName
+      ? () => h(NIcon, null, { default: createIcon(iconName) })
+      : undefined;
+
+    // 非菜单项但有子路由，直接递归处理子路由
+    if (!isMenu && hasChildren) {
+      return [...result, ...buildMenus(route.children!, fullPath)];
     }
-  }
 
-  return result
-}
+    // 非菜单项且无子路由，跳过
+    if (!isMenu) {
+      return result;
+    }
+
+    // 菜单项处理
+    const menuItem: SafeMenuOption = {
+      label: title,
+      key,
+      icon,
+      show: isShow,
+      name: title,
+      path: ''
+    };
+
+    // 有子路由的处理
+    if (hasChildren) {
+      const childrenMenu = buildMenus(route.children!, fullPath);
+      if (childrenMenu.length > 0) {
+        menuItem.children = childrenMenu;
+      }
+      result.push(menuItem);
+      return result;
+    }
+
+    // 无子路由但有组件的处理
+    if (route.component) {
+      menuItem.label = () => h(RouterLink, { to: fullPath }, { default: () => title });
+      menuItem.path = fullPath;
+    }
+
+    result.push(menuItem);
+    return result;
+  }, []);
+};
