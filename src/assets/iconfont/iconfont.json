@@ -6,6 +6,34 @@
   "description": "whim-vue icon",
   "glyphs": [
     {
+      "icon_id": "4199545",
+      "name": "登录日志",
+      "font_class": "denglurizhi",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "26876046",
+      "name": "管理登录日志",
+      "font_class": "guanlidenglurizhi",
+      "unicode": "ea45",
+      "unicode_decimal": 59973
+    },
+    {
+      "icon_id": "6517471",
+      "name": "文件-日志",
+      "font_class": "wj-rz",
+      "unicode": "e715",
+      "unicode_decimal": 59157
+    },
+    {
+      "icon_id": "37202895",
+      "name": "日志",
+      "font_class": "rizhi",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
       "icon_id": "7157823",
       "name": "返回",
       "font_class": "fanhui",

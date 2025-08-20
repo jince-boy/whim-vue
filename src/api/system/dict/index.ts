@@ -54,8 +54,8 @@ export const deleteDictData = (params: object) => {
   return request('/api/system/dictData/delete', RequestMethod.DELETE, { params })
 }
 
-export const fetchDictDataListByDictType = (params: object) => {
-  return request('/api/system/dictData/type/' + params, RequestMethod.GET)
+export const fetchDictDataListByDictType = (params: string) => {
+  return request<DictDataResult[]>('/api/system/dictData/type/' + params, RequestMethod.GET)
 }
 
 export const exportDictData = (params: object) => {

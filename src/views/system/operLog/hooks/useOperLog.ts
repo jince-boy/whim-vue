@@ -1,0 +1,302 @@
+import { fetchDictDataListByDictType } from '@/api/system/dict'
+import type { DictData } from '@/views/system/dictData/hooks/types.ts'
+import dayjs from 'dayjs'
+import { type DataTableColumn, NButton, NSpace, NTag, useMessage } from 'naive-ui'
+import { cleanOperLog, deleteOperLog, exportOperLog, fetchOperLogPage } from '@/api/system/log'
+import type { OperLog } from '@/views/system/operLog/hooks/types.ts'
+import { useFormDialog } from '@/components/dialog/useFormDialog.ts'
+
+export function useOperLog() {
+  const { openDeleteDialog } = useFormDialog()
+  const message = useMessage()
+  const form = reactive({
+    title: '',
+    operName: '',
+    logType: null,
+    status: null,
+    ipAddress: '',
+    startTime: '',
+    endTime: '',
+  })
+  const showModal = ref(false)
+  const currentOperLog: Ref<OperLog | null> = ref(null)
+  const pagination = reactive({
+    page: 1,
+    pageSize: 10,
+    itemCount: 0,
+    pageCount: 0,
+  })
+
+  const tableColumns: DataTableColumn[] = [
+    {
+      type: 'selection',
+    },
+    {
+      title: '操作人',
+      key: 'operName',
+      align: 'center',
+    },
+    {
+      title: '模块名称',
+      key: 'title',
+      align: 'center',
+    },
+    {
+      title: '操作类型',
+      key: 'operType',
+      align: 'center',
+      render(row: object) {
+        const operLog = row as OperLog
+        const dictData = getDictOperTypeData(String(operLog.logType))
+        return h(
+          NTag,
+          {
+            bordered: false,
+            type: dictData!.listClass,
+          },
+          { default: () => dictData!.label },
+        )
+      },
+    },
+    {
+      title: '操作IP',
+      key: 'operIp',
+      align: 'center',
+    },
+    {
+      title: '操作地点',
+      key: 'operLocation',
+      align: 'center',
+    },
+    {
+      title: '登录状态',
+      key: 'status',
+      align: 'center',
+      render(row: object) {
+        const operLog = row as OperLog
+        const dictData = getDictStatusData(String(operLog.status))
+        return h(
+          NTag,
+          {
+            bordered: false,
+            type: dictData!.listClass,
+          },
+          { default: () => dictData!.label },
+        )
+      },
+    },
+    {
+      title: '操作时间',
+      key: 'operTime',
+      align: 'center',
+    },
+    {
+      title: '耗时',
+      key: 'costTime',
+      align: 'center',
+      render(row: object) {
+        const operLog = row as OperLog
+        return h('span', null, { default: () => operLog.costTime + 'ms' })
+      },
+    },
+    {
+      title: '操作',
+      key: 'action',
+      align: 'center',
+      render(row: object) {
+        const operLog = row as OperLog
+        return h(NSpace, { justify: 'center' }, () => [
+          h(
+            NButton,
+            {
+              text: true,
+              type: 'primary',
+              onClick: () => {
+                showOperLogDetail(operLog)
+              },
+            },
+            { default: () => '查看' },
+          ),
+          h(
+            NButton,
+            {
+              text: true,
+              type: 'primary',
+              onClick: () => {
+                removeOperLog(operLog)
+              },
+            },
+            { default: () => '删除' },
+          ),
+        ])
+      },
+    },
+  ]
+
+  const tableData = ref<object[]>([])
+
+  const loading = ref(false)
+
+  const dateRange = ref(null)
+  const sysOperTypeOptions = ref<DictData[]>([])
+  const sysStatusOptions = ref<DictData[]>([])
+
+  /**
+   * 查看登录日志详情
+   * @param value
+   */
+  const showOperLogDetail = (value: OperLog) => {
+    showModal.value = true
+    currentOperLog.value = value
+  }
+  /**
+   * 删除登录日志
+   * @param row
+   */
+  const removeOperLog = (row: OperLog) => {
+    openDeleteDialog({
+      content: `确定要删除这条操作日志吗？删除后无法恢复！`,
+      onSubmit: () => {
+        deleteOperLog({ operLogIds: [row.id] }).then((res) => {
+          if (res.code == 200) {
+            message.success(`删除成功`)
+            getOperLogPage()
+          } else {
+            message.error(res.message)
+          }
+        })
+      },
+    })
+  }
+  /**
+   * 批量删除登录日志
+   */
+  const removeOperLogBatch = (ids: Array<string | number>) => {
+    openDeleteDialog({
+      content: `确定要删除选中的 ${ids.length} 个操作日志吗？删除后无法恢复！`,
+      onSubmit: () => {
+        deleteOperLog({ operLogIds: ids }).then((res) => {
+          if (res.code == 200) {
+            message.success(`删除成功`)
+            getOperLogPage()
+          } else {
+            message.error(res.message)
+          }
+        })
+      },
+    })
+  }
+
+  /**
+   * 清理登录日志
+   */
+  const handleCleanOperLog = () => {
+    openDeleteDialog({
+      content: `确定要清空操作日志吗？删除后无法恢复！`,
+      onSubmit: () => {
+        cleanOperLog().then((res) => {
+          if (res.code == 200) {
+            message.success(`清理成功`)
+            getOperLogPage()
+          } else {
+            message.error(res.message)
+          }
+        })
+      },
+    })
+  }
+  /**
+   * 导出字典类型
+   */
+  const exportExcel = async () => {
+    await exportOperLog()
+  }
+  /**
+   * 获取登录日志分页
+   */
+  const getOperLogPage = () => {
+    fetchOperLogPage({
+      ...form,
+      pageNum: pagination.page,
+      pageSize: pagination.pageSize,
+    }).then((res) => {
+      if (res.code === 200) {
+        tableData.value = res.data.data
+        pagination.page = res.data.currentPage
+        pagination.pageSize = res.data.size
+        pagination.itemCount = res.data.total
+        pagination.pageCount = res.data.pages
+        loading.value = false
+      }
+    })
+  }
+  /**
+   * 获取系统状态字典
+   */
+  const getSysStatus = () => {
+    fetchDictDataListByDictType('sys_status').then((res) => {
+      if (res.code === 200) {
+        sysStatusOptions.value = res.data
+      }
+    })
+  }
+
+  /**
+   * 获取字典数据
+   * @param value
+   */
+  const getDictStatusData = (value: string): DictData | undefined => {
+    return sysStatusOptions.value.find((item) => item.value == value)
+  }
+  const getDictOperTypeData = (value: string): DictData | undefined => {
+    return sysOperTypeOptions.value.find((item) => item.value == value)
+  }
+
+  /**
+   * 时间选择器回调
+   * @param timestamps
+   */
+  const handleDateChange = (timestamps: number[]) => {
+    if (timestamps && timestamps.length === 2) {
+      form.startTime = dayjs(timestamps[0]).format('YYYY-MM-DD HH:mm:ss')
+      form.endTime = dayjs(timestamps[1]).format('YYYY-MM-DD HH:mm:ss')
+    } else {
+      form.startTime = ''
+      form.endTime = ''
+    }
+  }
+  /**
+   * 获取操作类型字典
+   */
+  const getOperType = () => {
+    fetchDictDataListByDictType('sys_oper_type').then((res) => {
+      if (res.code === 200) {
+        sysOperTypeOptions.value = res.data
+      }
+    })
+  }
+  onMounted(() => {
+    getSysStatus()
+    getOperType()
+    getOperLogPage()
+  })
+  return {
+    form,
+    sysOperTypeOptions,
+    dateRange,
+    handleDateChange,
+    sysStatusOptions,
+    tableColumns,
+    tableData,
+    pagination,
+    loading,
+    getOperLogPage,
+    exportExcel,
+    removeOperLogBatch,
+    handleCleanOperLog,
+    showModal,
+    currentOperLog,
+    getDictOperTypeData,
+    getDictStatusData,
+  }
+}

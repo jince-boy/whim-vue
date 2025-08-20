@@ -42,7 +42,7 @@ defineExpose({
       :label-placement="props.labelPlacement"
       label-align="left"
     >
-      <n-grid :cols="4" x-gap="12" y-gap="12">
+      <n-grid :cols="5" x-gap="12" y-gap="12">
         <!-- 表单项插槽 -->
         <slot name="form"></slot>
 

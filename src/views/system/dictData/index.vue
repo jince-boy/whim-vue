@@ -56,7 +56,7 @@ const {
       @delete="removeDictDataBatch"
       @export="exportExcel"
     >
-      <template #action-buttons>
+      <template #action-buttons-right>
         <n-button type="error" @click="backDictTypePage" :render-icon="createIcon('fanhui')">
           返回
         </n-button>

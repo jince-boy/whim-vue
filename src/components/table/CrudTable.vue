@@ -45,6 +45,7 @@ const {
       <n-flex justify="space-between" align="center">
         <!-- 左侧按钮 -->
         <n-space>
+          <slot name="action-buttons-left"></slot>
           <n-button
             v-permission="props.addButtonPermission"
             v-if="addButtonShow"
@@ -84,7 +85,7 @@ const {
             导出
           </n-button>
           <!-- 右侧插槽（比如刷新按钮等） -->
-          <slot name="action-buttons"></slot>
+          <slot name="action-buttons-right"></slot>
         </n-space>
         <n-space align="center">
           <n-flex align="center"

@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { useThemeStore } from '@/stores/modules/theme.ts'
 import { NThemeEditor, zhCN, dateZhCN } from 'naive-ui'
+import hljs from 'highlight.js/lib/core'
+import json from 'highlight.js/lib/languages/json'
+
 const themeStore = useThemeStore()
+
+hljs.registerLanguage('json', json)
 </script>
 
 <template>
@@ -10,6 +15,7 @@ const themeStore = useThemeStore()
     :date-locale="dateZhCN"
     :theme="themeStore.getTheme"
     :theme-overrides="themeStore.getThemeOverrides"
+    :hljs="hljs"
   >
     <n-theme-editor>
       <!--加载条-->

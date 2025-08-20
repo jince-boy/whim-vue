@@ -57,7 +57,7 @@ const {
       @delete="removeDictTypeBatch"
       @export="exportExcel"
     >
-      <template #action-buttons>
+      <template #action-buttons-right>
         <n-button
           v-permission="['system:dictType:reset']"
           type="error"
@@ -67,7 +67,6 @@ const {
         >
       </template>
     </CrudTable>
-    <!--    <div></div>-->
   </n-space>
 </template>
 
