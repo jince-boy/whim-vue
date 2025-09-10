@@ -3,11 +3,11 @@ import { useIcon } from '@/components/icon/useIcon.ts'
 import {
   type BaseTableEmits,
   type BaseTableProps,
-  useCrudTable,
-} from '@/components/table/useCrudTable.ts'
+  useWhimTable,
+} from '@/components/table/useWhimTable.ts'
 
 defineOptions({
-  name: 'CrudTable',
+  name: 'WhimTable',
 })
 
 const props = withDefaults(defineProps<BaseTableProps>(), {
@@ -26,6 +26,8 @@ const {
   isEditEnabled,
   isDeleteEnabled,
   paginationConfig,
+  expandedRowKeys,
+  handleExpandChange,
   getRowKey,
   onUpdateCheckedRowKeys,
   handlePageChange,
@@ -35,7 +37,7 @@ const {
   selectableColumns,
   checkedColumnKeys,
   visibleColumns,
-} = useCrudTable(props, emit)
+} = useWhimTable(props, emit)
 </script>
 
 <template>
@@ -141,12 +143,17 @@ const {
         :columns="visibleColumns"
         :data="props.data"
         :loading="props.loading"
+        :remote="true"
         :pagination="paginationConfig"
         :row-key="getRowKey"
         :bordered="showBorder"
         :single-line="!showBorder"
         :striped="showStriped"
         :checked-row-keys="selectedRowKeys"
+        :default-expanded-row-keys="defaultExpandedRowKeys"
+        :default-expand-all="props.defaultExpandAll"
+        :expanded-row-keys="expandedRowKeys"
+        @update:expanded-row-keys="handleExpandChange"
         @update:checked-row-keys="onUpdateCheckedRowKeys"
         @update:page="handlePageChange"
         @update:page-size="handlePageSizeChange"

@@ -25,6 +25,8 @@ interface FormModalOptions<T, E = { formRef: FormInst; formModel: T }> {
   formComponent: object
   /** 表单初始值（可选） */
   model?: T
+  /** 额外的数据（可选） */
+  extendedData?: T
   /**
    * 从组件实例获取表单API的函数
    * 默认返回 formRef 和 formModel

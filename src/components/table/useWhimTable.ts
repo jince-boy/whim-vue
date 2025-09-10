@@ -3,7 +3,7 @@ import type {
   DataTableRowKey,
   DataTableColumnGroup,
   DataTableBaseColumn,
-  FormInst,
+  DataTableInst,
 } from 'naive-ui'
 
 /**
@@ -30,7 +30,10 @@ export interface BaseTableProps {
   /** 表格数据 */
   data: object[]
   /** 分页配置 */
-  pagination: Pagination
+  pagination: boolean | Pagination
+  defaultExpandedRowKeys?: Array<string | number>
+  defaultExpandAll?: boolean
+  expandedRowKeys?: Array<string | number>
   /** 行唯一标识字段名或获取行key的函数 */
   rowKey?: string | ((row: object) => string | number)
   /** 按钮权限控制 */
@@ -57,6 +60,7 @@ export interface BaseTableProps {
 export interface BaseTableEmits {
   (e: 'update:pageNum', page: number): void
   (e: 'update:pageSize', pageSize: number): void
+  (e: 'update:expanded-row-keys', keys: Array<number | string>): void
   (e: 'add'): void
   (e: 'edit', rowKey: DataTableRowKey): void
   (e: 'delete', rowKeys: DataTableRowKey[]): void
@@ -65,9 +69,9 @@ export interface BaseTableEmits {
   (e: 'refresh'): void
 }
 
-export function useCrudTable(props: BaseTableProps, emit: BaseTableEmits) {
+export function useWhimTable(props: BaseTableProps, emit: BaseTableEmits) {
   /** 表格实例引用 */
-  const tableRef = ref<FormInst | null>()
+  const tableRef = ref<DataTableInst | null>()
   /** 是否显示斑马纹 */
   const showStriped = ref(false)
   /** 是否显示边框 */
@@ -96,19 +100,34 @@ export function useCrudTable(props: BaseTableProps, emit: BaseTableEmits) {
     const key = (props.rowKey as string | undefined) || 'id'
     return r[key] as string | number | undefined
   }
+
+  /**
+   * 行展开状态
+   */
+  const expandedRowKeys = toRef(props, 'expandedRowKeys')
+
+  /**
+   * 行展开处理函数
+   * @param keys
+   */
+  const handleExpandChange = (keys: Array<string | number>) => {
+    expandedRowKeys.value.splice(0, expandedRowKeys.value.length, ...keys)
+    emit('update:expanded-row-keys', keys)
+  }
   /**
    * 与父组件 pagination 保持引用同步
    */
   const pagination = toRef(props, 'pagination')
+
   /**
    * 计算分页配置，默认支持页码大小选择
    */
   const paginationConfig = computed(() => {
-    if (!pagination) return false
+    if (unref(pagination) === false) return false
     return {
-      ...pagination,
+      ...pagination.value,
       showSizePicker: true,
-      pageSizes: [10, 20, 30, 40, 50],
+      pageSizes: [10, 30, 50],
     }
   })
   /**
@@ -116,7 +135,7 @@ export function useCrudTable(props: BaseTableProps, emit: BaseTableEmits) {
    * @param page
    */
   const handlePageChange = (page: number) => {
-    pagination.value.page = page
+    ;(pagination.value as Pagination).page = page
     emit('update:pageNum', page)
   }
 
@@ -125,7 +144,7 @@ export function useCrudTable(props: BaseTableProps, emit: BaseTableEmits) {
    * @param pageSize
    */
   const handlePageSizeChange = (pageSize: number) => {
-    pagination.value.pageSize = pageSize
+    ;(pagination.value as Pagination).pageSize = pageSize
     emit('update:pageSize', pageSize)
   }
   /**
@@ -208,6 +227,8 @@ export function useCrudTable(props: BaseTableProps, emit: BaseTableEmits) {
     isEditEnabled,
     isDeleteEnabled,
     paginationConfig,
+    expandedRowKeys,
+    handleExpandChange,
     getRowKey,
     onUpdateCheckedRowKeys,
     handlePageChange,

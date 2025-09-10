@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type DictDataProps, useDictData } from '@/views/system/dictData/hooks/useDictData.ts'
 import SearchForm from '@/components/form/SearchForm.vue'
-import CrudTable from '@/components/table/CrudTable.vue'
+import WhimTable from '@/components/table/WhimTable.vue'
 import { useIcon } from '@/components/icon/useIcon.ts'
 
 defineOptions({
@@ -39,7 +39,7 @@ const {
         </n-form-item-gi>
       </template>
     </SearchForm>
-    <CrudTable
+    <WhimTable
       :columns="tableColumns"
       :data="tableData"
       :pagination="pagination"
@@ -61,7 +61,7 @@ const {
           返回
         </n-button>
       </template>
-    </CrudTable>
+    </WhimTable>
   </n-space>
 </template>
 

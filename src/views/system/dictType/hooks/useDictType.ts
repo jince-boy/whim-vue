@@ -75,7 +75,7 @@ export function useDictType() {
             NButton,
             {
               text: true,
-              type: 'primary',
+              type: 'info',
               onClick: async () => {
                 await openEditDialog(dictType.id)
               },
@@ -86,7 +86,7 @@ export function useDictType() {
             NButton,
             {
               text: true,
-              type: 'primary',
+              type: 'error',
               onClick: () => {
                 removeDictType(dictType)
               },

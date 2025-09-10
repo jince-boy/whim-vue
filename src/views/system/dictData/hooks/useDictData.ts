@@ -82,7 +82,7 @@ export function useDictData(props: DictDataProps) {
             NButton,
             {
               text: true,
-              type: 'primary',
+              type: 'info',
               onClick: async () => {
                 await openEditDialog(dictData.id)
               },
@@ -93,7 +93,7 @@ export function useDictData(props: DictDataProps) {
             NButton,
             {
               text: true,
-              type: 'primary',
+              type: 'error',
               onClick: () => {
                 removeDictData(dictData)
               },

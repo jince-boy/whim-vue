@@ -8,7 +8,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    CrudTable: typeof import('./src/components/table/CrudTable.vue')['default']
     Icon: typeof import('./src/components/icon/Icon.vue')['default']
     NAlert: typeof import('naive-ui')['NAlert']
     NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']
@@ -77,5 +76,6 @@ declare module 'vue' {
     Search: typeof import('./src/components/search/index.vue')['default']
     SearchForm: typeof import('./src/components/form/SearchForm.vue')['default']
     Theme: typeof import('./src/components/theme/index.vue')['default']
+    WhimTable: typeof import('./src/components/table/WhimTable.vue')['default']
   }
 }

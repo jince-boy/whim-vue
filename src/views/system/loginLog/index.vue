@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CrudTable from '@/components/table/CrudTable.vue'
+import WhimTable from '@/components/table/WhimTable.vue'
 import SearchForm from '@/components/form/SearchForm.vue'
 import { useLoginLog } from '@/views/system/loginLog/hooks/useLoginLog.ts'
 import { useIcon } from '@/components/icon/useIcon.ts'
@@ -58,7 +58,7 @@ const {
         </n-form-item-gi>
       </template>
     </SearchForm>
-    <CrudTable
+    <WhimTable
       :columns="tableColumns"
       :data="tableData"
       :pagination="pagination"
@@ -82,7 +82,7 @@ const {
           >清空</n-button
         >
       </template>
-    </CrudTable>
+    </WhimTable>
   </n-space>
 </template>
 

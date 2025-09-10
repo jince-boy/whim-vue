@@ -16,7 +16,7 @@ export interface Role {
 }
 
 export interface User {
-  id: number
+  id: number | string
   deptId: number
   username: string
   avatar: string | null
@@ -29,7 +29,9 @@ export interface User {
   roles: Role[]
 }
 
+
 export interface MenuItem {
+  id: number | string
   name: string
   title: string
   path: string

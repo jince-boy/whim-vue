@@ -29,14 +29,15 @@ export const usePermissionStore = defineStore('permission', {
         const result: RouteRecordRaw[] = []
         menus.forEach((menu) => {
           const route: RouteRecordRaw = {
-            path: menu.path,
-            name: menu.name,
+            path: menu.path || `external-${menu.id}`, // 如果没有path，使用id生成
+            name: menu.name || `external-${menu.id}`, // 如果没有name，使用id生成
             props: true,
             meta: {
               title: menu.title,
               keepAlive: menu.keepAlive !== 0,
               isMenu: true,
               isShow: menu.visible !== 1,
+              isExternal: false,
               icon: menu.icon,
             },
             children: [],
@@ -44,6 +45,10 @@ export const usePermissionStore = defineStore('permission', {
           if (menu.component) {
             route.component = modules[`/src/views/${menu.component}.vue`]
           } else {
+            if (menu.redirect) {
+              route.meta!.link = menu.redirect
+              route.meta!.isExternal = true
+            }
             route.redirect = 'no-found'
           }
           if (menu.children && menu.children.length > 0) {
@@ -85,7 +90,6 @@ export const usePermissionStore = defineStore('permission', {
         ...buildMenus(constantRouter),
         ...buildMenus(this.dynamicRoutes),
       ] as SafeMenuOption[]
-      console.log(...buildMenus(this.dynamicRoutes))
     },
   },
 })

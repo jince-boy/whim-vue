@@ -1,11 +1,11 @@
-import { fetchDictDataListByDictType } from '@/api/system/dict'
-import type { DictData } from '@/views/system/dictData/hooks/types.ts'
 import dayjs from 'dayjs'
 import { type DataTableColumn, NButton, NSpace, NTag, useMessage } from 'naive-ui'
 import { cleanOperLog, deleteOperLog, exportOperLog, fetchOperLogPage } from '@/api/system/log'
 import type { OperLog } from '@/views/system/operLog/hooks/types.ts'
 import { useFormDialog } from '@/components/dialog/useFormDialog.ts'
-
+import { useDict } from '@/components/dict/useDict.ts'
+const { dictData: sysStatusOptions, getDictData: getDictStatusData } = await useDict('sys_status')
+const { dictData: sysOperTypeOptions, getDictData: getDictOperTypeData } = await useDict('sys_oper_type')
 export function useOperLog() {
   const { openDeleteDialog } = useFormDialog()
   const message = useMessage()
@@ -110,7 +110,7 @@ export function useOperLog() {
             NButton,
             {
               text: true,
-              type: 'primary',
+              type: 'info',
               onClick: () => {
                 showOperLogDetail(operLog)
               },
@@ -121,7 +121,7 @@ export function useOperLog() {
             NButton,
             {
               text: true,
-              type: 'primary',
+              type: 'error',
               onClick: () => {
                 removeOperLog(operLog)
               },
@@ -138,8 +138,6 @@ export function useOperLog() {
   const loading = ref(false)
 
   const dateRange = ref(null)
-  const sysOperTypeOptions = ref<DictData[]>([])
-  const sysStatusOptions = ref<DictData[]>([])
 
   /**
    * 查看登录日志详情
@@ -230,27 +228,6 @@ export function useOperLog() {
       }
     })
   }
-  /**
-   * 获取系统状态字典
-   */
-  const getSysStatus = () => {
-    fetchDictDataListByDictType('sys_status').then((res) => {
-      if (res.code === 200) {
-        sysStatusOptions.value = res.data
-      }
-    })
-  }
-
-  /**
-   * 获取字典数据
-   * @param value
-   */
-  const getDictStatusData = (value: string): DictData | undefined => {
-    return sysStatusOptions.value.find((item) => item.value == value)
-  }
-  const getDictOperTypeData = (value: string): DictData | undefined => {
-    return sysOperTypeOptions.value.find((item) => item.value == value)
-  }
 
   /**
    * 时间选择器回调
@@ -265,19 +242,7 @@ export function useOperLog() {
       form.endTime = ''
     }
   }
-  /**
-   * 获取操作类型字典
-   */
-  const getOperType = () => {
-    fetchDictDataListByDictType('sys_oper_type').then((res) => {
-      if (res.code === 200) {
-        sysOperTypeOptions.value = res.data
-      }
-    })
-  }
   onMounted(() => {
-    getSysStatus()
-    getOperType()
     getOperLogPage()
   })
   return {

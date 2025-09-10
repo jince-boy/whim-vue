@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import CrudTable from '@/components/table/CrudTable.vue'
+import WhimTable from '@/components/table/WhimTable.vue'
 import SearchForm from '@/components/form/SearchForm.vue'
 import { useOperLog } from '@/views/system/operLog/hooks/useOperLog.ts'
 import { useIcon } from '@/components/icon/useIcon.ts'
-import type { OperLog } from '@/views/system/operLog/hooks/types.ts'
 
 const { createIcon } = useIcon()
 
@@ -75,7 +74,7 @@ const {
         </n-form-item-gi>
       </template>
     </SearchForm>
-    <CrudTable
+    <WhimTable
       :columns="tableColumns"
       :data="tableData"
       :pagination="pagination"
@@ -99,7 +98,7 @@ const {
           >清空</n-button
         >
       </template>
-    </CrudTable>
+    </WhimTable>
     <n-modal
       v-model:show="showModal"
       preset="card"

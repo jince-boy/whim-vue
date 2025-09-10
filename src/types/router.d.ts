@@ -9,6 +9,8 @@ declare module 'vue-router' {
     keepAlive?: boolean
     isMenu?: boolean
     isShow?: boolean
+    isExternal?: boolean
+    link?: string
     icon?: string
     visible?: 0 | 1
   }

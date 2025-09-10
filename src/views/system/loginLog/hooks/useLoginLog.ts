@@ -1,11 +1,10 @@
-import { fetchDictDataListByDictType } from '@/api/system/dict'
 import type { LoginLog, LoginLogForm } from '@/views/system/loginLog/hooks/types.ts'
 import { cleanLoginLog, deleteLoginLog, exportLoginLog, fetchLoginLogPage } from '@/api/system/log'
 import { type DataTableColumn, NButton, NSpace, NTag, useMessage } from 'naive-ui'
-import type { DictData } from '@/views/system/dictData/hooks/types.ts'
 import dayjs from 'dayjs'
 import { useFormDialog } from '@/components/dialog/useFormDialog.ts'
-
+import { useDict } from '@/components/dict/useDict.ts'
+const { dictData: sysStatusOptions, getDictData } = await useDict('sys_status')
 export function useLoginLog() {
   const { openDeleteDialog } = useFormDialog()
   const message = useMessage()
@@ -97,7 +96,7 @@ export function useLoginLog() {
             NButton,
             {
               text: true,
-              type: 'primary',
+              type: 'error',
               onClick: () => {
                 removeLoginLog(loginLog)
               },
@@ -112,16 +111,6 @@ export function useLoginLog() {
   const tableData = ref<object[]>([])
 
   const loading = ref(false)
-
-  const sysStatusOptions = ref<DictData[]>([])
-
-  /**
-   * 获取字典数据
-   * @param value
-   */
-  const getDictData = (value: string): DictData | undefined => {
-    return sysStatusOptions.value.find((item) => item.value == value)
-  }
 
   /**
    * 删除登录日志
@@ -219,19 +208,9 @@ export function useLoginLog() {
       form.endTime = ''
     }
   }
-  /**
-   * 获取系统状态字典
-   */
-  const getSysStatus = () => {
-    fetchDictDataListByDictType('sys_status').then((res) => {
-      if (res.code === 200) {
-        sysStatusOptions.value = res.data
-      }
-    })
-  }
 
-  onMounted(() => {
-    getSysStatus()
+
+  onMounted( () => {
     getLoginLogPage()
   })
   return {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SearchForm from '@/components/form/SearchForm.vue'
-import CrudTable from '@/components/table/CrudTable.vue'
+import WhimTable from '@/components/table/WhimTable.vue'
 import { useDictType } from '@/views/system/dictType/hooks/useDictType.ts'
 import { useIcon } from '@/components/icon/useIcon.ts'
 
@@ -40,7 +40,7 @@ const {
         </n-form-item-gi>
       </template>
     </SearchForm>
-    <CrudTable
+    <WhimTable
       :columns="tableColumns"
       :data="tableData"
       :pagination="pagination"
@@ -66,7 +66,7 @@ const {
           >刷新缓存</n-button
         >
       </template>
-    </CrudTable>
+    </WhimTable>
   </n-space>
 </template>
 

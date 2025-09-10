@@ -1,0 +1,17 @@
+export interface MenuItem {
+  id: number | string
+  name: string
+  title: string
+  type: number
+  path: string
+  code: string
+  sort: number
+  queryParam: object
+  component: string
+  icon: string
+  keepAlive: 0 | 1
+  visible: 0 | 1
+  redirect: string
+  remark: string
+  children?: MenuItem[]
+}
