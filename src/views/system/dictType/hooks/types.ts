@@ -1,5 +1,5 @@
 export interface DictType {
-  id: number | string
+  id: string
   name: string
   type: string
   remark: string

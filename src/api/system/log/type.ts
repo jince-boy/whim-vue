@@ -1,5 +1,5 @@
 export interface LoginLogResult {
-  id: number | string
+  id: string
   username: string
   browser: string
   os: string
@@ -20,7 +20,7 @@ export interface LoginLogPageResult {
 }
 
 export interface OperLogResult {
-  id: number | string
+  id: string
   title: string
   logType: number
   methodName: string

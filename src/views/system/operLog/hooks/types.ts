@@ -1,5 +1,5 @@
 export interface OperLog {
-  id: number | string
+  id: string
   title: string
   logType: number
   methodName: string

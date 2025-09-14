@@ -1,7 +1,8 @@
 export interface MenuItem {
-  id: number | string
+  id: string
   name: string
   title: string
+  parentId: string
   type: number
   path: string
   code: string

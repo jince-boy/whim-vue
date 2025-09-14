@@ -1,5 +1,5 @@
 export interface DictTypeResult {
-  id: number | string
+  id: string
   name: string
   type: string
   status: number
@@ -14,7 +14,7 @@ export interface DictTypePageResult {
   total: number
 }
 export interface DictDataResult {
-  id: number | string
+  id: string
   dictType: string
   label: string
   value: string

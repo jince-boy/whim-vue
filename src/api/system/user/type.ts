@@ -6,7 +6,7 @@ export interface UserInfoResult {
 }
 
 export interface Role {
-  id: number
+  id: string
   name: string
   code: string
   dataScope: number
@@ -16,7 +16,7 @@ export interface Role {
 }
 
 export interface User {
-  id: number | string
+  id: string
   deptId: number
   username: string
   avatar: string | null
@@ -29,9 +29,8 @@ export interface User {
   roles: Role[]
 }
 
-
 export interface MenuItem {
-  id: number | string
+  id: string
   name: string
   title: string
   path: string

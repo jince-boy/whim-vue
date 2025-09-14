@@ -26,7 +26,7 @@ interface FormModalOptions<T, E = { formRef: FormInst; formModel: T }> {
   /** 表单初始值（可选） */
   model?: T
   /** 额外的数据（可选） */
-  extendedData?: T
+  extendedData?: object
   /**
    * 从组件实例获取表单API的函数
    * 默认返回 formRef 和 formModel
@@ -92,6 +92,7 @@ export function useFormDialog() {
       content: () =>
         h(options.formComponent, {
           modelValue: options.model,
+          extendedData: options.extendedData,
           ref: editFormRef,
         }),
       // 确定按钮点击事件

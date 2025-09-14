@@ -3,7 +3,13 @@ import SearchForm from '@/components/form/SearchForm.vue'
 import { useMenu } from '@/views/system/menu/hooks/useMenu.ts'
 import WhimTable from '@/components/table/WhimTable.vue'
 
-const { form, tableData, loading, getMenuList, tableColumns, expandedRowKeys } = useMenu()
+defineOptions({
+  name:'SysPermission'
+})
+
+const { form, tableData, loading, getMenuList, tableColumns, expandedRowKeys, openAddDialog } =
+  useMenu()
+
 </script>
 
 <template>
@@ -20,14 +26,15 @@ const { form, tableData, loading, getMenuList, tableColumns, expandedRowKeys } =
       :data="tableData"
       :pagination="false"
       :loading="loading"
+      :striped-button-show="false"
       :delete-button-show="false"
       :edit-button-show="false"
       :add-button-permission="['system:menu:add']"
       :export-button-permission="['system:menu:export']"
       :expanded-row-keys="expandedRowKeys"
       @refresh="getMenuList"
+      @add="openAddDialog"
     >
-
     </WhimTable>
   </n-space>
 </template>

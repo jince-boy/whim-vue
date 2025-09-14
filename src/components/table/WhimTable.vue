@@ -15,6 +15,8 @@ const props = withDefaults(defineProps<BaseTableProps>(), {
   editButtonShow: true,
   deleteButtonShow: true,
   exportButtonShow: true,
+  stripedButtonShow: true,
+  borderButtonShow: true,
 })
 const emit = defineEmits<BaseTableEmits>()
 const { createIcon } = useIcon()
@@ -90,14 +92,14 @@ const {
           <slot name="action-buttons-right"></slot>
         </n-space>
         <n-space align="center">
-          <n-flex align="center"
+          <n-flex align="center" v-if="borderButtonShow"
             ><n-text>边框</n-text><n-switch size="small" @update:value="handleShowBorder"
           /></n-flex>
-          <n-divider vertical />
-          <n-flex align="center"
+          <n-divider vertical v-if="borderButtonShow"/>
+          <n-flex align="center" v-if="stripedButtonShow"
             ><n-text>斑马线</n-text><n-switch size="small" @update:value="handleShowStriped"
           /></n-flex>
-          <n-divider vertical />
+          <n-divider vertical v-if="stripedButtonShow"/>
           <n-tooltip trigger="hover">
             <template #trigger>
               <n-button quaternary circle :focusable="false" @click="emit('refresh')">

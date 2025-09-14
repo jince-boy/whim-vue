@@ -1,7 +1,7 @@
 import type { GlobalThemeOverrides } from 'naive-ui'
 
 export interface MenuItem {
-  id: number | string
+  id: string
   name: string
   title: string
   path: string

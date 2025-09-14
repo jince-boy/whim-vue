@@ -43,6 +43,8 @@ declare module 'vue' {
     NIcon: typeof import('naive-ui')['NIcon']
     NImage: typeof import('naive-ui')['NImage']
     NInput: typeof import('naive-ui')['NInput']
+    NInputGroup: typeof import('naive-ui')['NInputGroup']
+    NInputGroupLabel: typeof import('naive-ui')['NInputGroupLabel']
     NInputNumber: typeof import('naive-ui')['NInputNumber']
     NLayout: typeof import('naive-ui')['NLayout']
     NLayoutContent: typeof import('naive-ui')['NLayoutContent']
@@ -58,6 +60,8 @@ declare module 'vue' {
     NModalProvider: typeof import('naive-ui')['NModalProvider']
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
     NPopover: typeof import('naive-ui')['NPopover']
+    NRadioButton: typeof import('naive-ui')['NRadioButton']
+    NRadioGroup: typeof import('naive-ui')['NRadioGroup']
     NScrollbar: typeof import('naive-ui')['NScrollbar']
     NSelect: typeof import('naive-ui')['NSelect']
     NSpace: typeof import('naive-ui')['NSpace']
@@ -69,6 +73,7 @@ declare module 'vue' {
     NTag: typeof import('naive-ui')['NTag']
     NText: typeof import('naive-ui')['NText']
     NTooltip: typeof import('naive-ui')['NTooltip']
+    NTreeSelect: typeof import('naive-ui')['NTreeSelect']
     NWatermark: typeof import('naive-ui')['NWatermark']
     Result: typeof import('./src/components/search/result.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -76,6 +81,7 @@ declare module 'vue' {
     Search: typeof import('./src/components/search/index.vue')['default']
     SearchForm: typeof import('./src/components/form/SearchForm.vue')['default']
     Theme: typeof import('./src/components/theme/index.vue')['default']
+    WhimSelectIcon: typeof import('./src/components/icon/WhimSelectIcon.vue')['default']
     WhimTable: typeof import('./src/components/table/WhimTable.vue')['default']
   }
 }

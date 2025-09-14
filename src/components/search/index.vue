@@ -37,7 +37,7 @@ const handleInput = () => {
     const currentName = node.name || ''
     const currentPath = node.path
     const newPathStack = [...pathStack, currentName]
-    // ✅ 只记录有 path 的匹配项
+    // 只记录有 path 的匹配项
     if (currentName.includes(keyword) && currentPath) {
       results.push({
         text: newPathStack.join(' > '),

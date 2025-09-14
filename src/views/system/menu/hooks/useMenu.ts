@@ -1,17 +1,22 @@
 import { fetchMenuList } from '@/api/system/menu'
 import { type DataTableColumn, NButton, NSpace, NTag, useMessage } from 'naive-ui'
-import type { MenuItem } from '@/views/system/menu/hooks/types.ts'
+import type { Menu, MenuItem } from '@/views/system/menu/hooks/types.ts'
 import { useIcon } from '@/components/icon/useIcon.ts'
 import { useDict } from '@/components/dict/useDict.ts'
+import { useFormDialog } from '@/components/dialog/useFormDialog.ts'
+import editForm from '@/views/system/menu/form.vue'
 
-const { getDictData } = await useDict('sys_menu_type')
+const { dictData, getDictData } = await useDict('sys_menu_type')
 const { getDictData: getSysShowStatusDict } = await useDict('sys_show_status')
+
 export function useMenu() {
   const { createIcon } = useIcon()
+  const { openFormDialog } = useFormDialog()
+
   const form = reactive({
     title: '',
   })
-  const tableData = ref<object[]>([])
+  const tableData = ref<MenuItem[]>([])
   const tableColumns: DataTableColumn[] = [
     {
       title: '菜单名称',
@@ -97,19 +102,21 @@ export function useMenu() {
       key: 'action',
       align: 'center',
       render(row: object) {
-        // const dictType = row as MenuItem
+        const menu = row as MenuItem
         return h(NSpace, { justify: 'center' }, () => [
-          h(
-            NButton,
-            {
-              text: true,
-              type: 'primary',
-              onClick: async () => {
-                // await openEditDialog(dictType.id)
-              },
-            },
-            { default: () => '新增' },
-          ),
+          menu.type == 3 || menu.type == 4
+            ? null
+            : h(
+                NButton,
+                {
+                  text: true,
+                  type: 'primary',
+                  onClick: async () => {
+                    await openAddDialog(menu.id, menu.type)
+                  },
+                },
+                { default: () => '新增' },
+              ),
           h(
             NButton,
             {
@@ -139,6 +146,20 @@ export function useMenu() {
   const loading = ref(false)
   const expandedRowKeys = ref<Array<number | string>>([])
 
+  const openAddDialog = (rowId: string, rowType: number) => {
+    openFormDialog<Menu>({
+      title: '新建菜单',
+      width: 800,
+      formComponent: editForm,
+      extendedData: {
+        rowId: rowId ?? '0',
+        rowType: rowType ?? 1,
+        menuTypeDict: dictData,
+        menuData: tableData.value,
+      },
+      onSubmit: async (formModel, dialog) => {},
+    })
+  }
   /**
    * 获取菜单列表
    */
@@ -161,5 +182,6 @@ export function useMenu() {
     tableColumns,
     getMenuList,
     expandedRowKeys,
+    openAddDialog,
   }
 }

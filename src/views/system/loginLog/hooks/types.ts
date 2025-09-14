@@ -7,7 +7,7 @@ export interface LoginLogForm {
 }
 
 export interface LoginLog {
-  id: number | string
+  id: string
   username: string
   browser: string
   os: string

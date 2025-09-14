@@ -36,6 +36,10 @@ export interface BaseTableProps {
   expandedRowKeys?: Array<string | number>
   /** 行唯一标识字段名或获取行key的函数 */
   rowKey?: string | ((row: object) => string | number)
+  /** 是否显示边框按钮 */
+  borderButtonShow?: boolean
+  /** 是否显示斑马纹 */
+  stripedButtonShow?: boolean
   /** 按钮权限控制 */
   addButtonPermission?: string[]
   addButtonRole?: string[]
@@ -111,7 +115,7 @@ export function useWhimTable(props: BaseTableProps, emit: BaseTableEmits) {
    * @param keys
    */
   const handleExpandChange = (keys: Array<string | number>) => {
-    expandedRowKeys.value.splice(0, expandedRowKeys.value.length, ...keys)
+    expandedRowKeys.value?.splice(0, expandedRowKeys.value.length, ...keys)
     emit('update:expanded-row-keys', keys)
   }
   /**
@@ -125,7 +129,7 @@ export function useWhimTable(props: BaseTableProps, emit: BaseTableEmits) {
   const paginationConfig = computed(() => {
     if (unref(pagination) === false) return false
     return {
-      ...pagination.value,
+      ...pagination,
       showSizePicker: true,
       pageSizes: [10, 30, 50],
     }

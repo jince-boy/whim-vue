@@ -6,13 +6,9 @@ export const dictDataRules: FormRules = {
   listClass: [{ required: true, message: '请输入回显样式', trigger: 'blur' }],
   sort: [
     {
+      type: 'number',
       required: true,
-      validator: (rule, value) => {
-        if (value === null || value === undefined || value === '') {
-          return new Error('请输入排序')
-        }
-        return true
-      },
+      message: '请输入排序',
       trigger: ['blur', 'change'],
     },
   ],
