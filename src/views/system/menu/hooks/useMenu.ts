@@ -7,7 +7,9 @@ import { useFormDialog } from '@/components/dialog/useFormDialog.ts'
 import editForm from '@/views/system/menu/form.vue'
 
 const { dictData, getDictData } = await useDict('sys_menu_type')
-const { getDictData: getSysShowStatusDict } = await useDict('sys_show_status')
+const { dictData: sysShowStatusDict, getDictData: getSysShowStatusDict } =
+  await useDict('sys_show_status')
+const { dictData: sysRunStatusDict } = await useDict('sys_run_status')
 
 export function useMenu() {
   const { createIcon } = useIcon()
@@ -155,6 +157,8 @@ export function useMenu() {
         rowId: rowId ?? '0',
         rowType: rowType ?? 1,
         menuTypeDict: dictData,
+        sysShowStatusDict: sysShowStatusDict,
+        sysRunStatusDict: sysRunStatusDict,
         menuData: tableData.value,
       },
       onSubmit: async (formModel, dialog) => {},

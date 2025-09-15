@@ -4,7 +4,7 @@ import { cleanOperLog, deleteOperLog, exportOperLog, fetchOperLogPage } from '@/
 import type { OperLog } from '@/views/system/operLog/hooks/types.ts'
 import { useFormDialog } from '@/components/dialog/useFormDialog.ts'
 import { useDict } from '@/components/dict/useDict.ts'
-const { dictData: sysStatusOptions, getDictData: getDictStatusData } = await useDict('sys_status')
+const { dictData: sysStatusOptions, getDictData: getDictStatusData } = await useDict('sys_result_status')
 const { dictData: sysOperTypeOptions, getDictData: getDictOperTypeData } = await useDict('sys_oper_type')
 export function useOperLog() {
   const { openDeleteDialog } = useFormDialog()

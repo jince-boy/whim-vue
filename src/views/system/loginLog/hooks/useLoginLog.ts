@@ -4,7 +4,7 @@ import { type DataTableColumn, NButton, NSpace, NTag, useMessage } from 'naive-u
 import dayjs from 'dayjs'
 import { useFormDialog } from '@/components/dialog/useFormDialog.ts'
 import { useDict } from '@/components/dict/useDict.ts'
-const { dictData: sysStatusOptions, getDictData } = await useDict('sys_status')
+const { dictData: sysStatusOptions, getDictData } = await useDict('sys_result_status')
 export function useLoginLog() {
   const { openDeleteDialog } = useFormDialog()
   const message = useMessage()

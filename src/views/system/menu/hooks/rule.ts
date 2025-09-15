@@ -7,4 +7,7 @@ export const menuRules: FormRules = {
   title: [{ type: 'string', required: true, message: '请输入菜单名称', trigger: 'blur' }],
   path: [{ type: 'string', required: true, message: '请输入路由地址', trigger: 'blur' }],
   sort: [{ type: 'number', required: true, message: '请输入排序', trigger: 'blur' }],
+  icon: [{ type: 'string', required: true, message: '请选择图标', trigger: 'blur' }],
+  visible: [{ type: 'number', required: true, message: '请选择显示状态', trigger: 'blur' }],
+  status: [{ type: 'number', required: true, message: '请选择菜单状态', trigger: 'blur' }],
 }
