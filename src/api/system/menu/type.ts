@@ -7,7 +7,7 @@ export interface MenuItem {
   path: string
   code: string
   sort: number
-  queryParam: object
+  queryParam: string
   component: string
   icon: string
   keepAlive: 0 | 1

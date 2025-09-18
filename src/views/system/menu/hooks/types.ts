@@ -7,7 +7,7 @@ export interface MenuItem {
   type: number
   code: string
   sort: number
-  queryParam: object
+  queryParam: string
   component: string
   icon: string
   keepAlive: 0 | 1
@@ -24,7 +24,7 @@ export interface Menu {
   parentId: string
   type: number
   path: string
-  queryParam: object
+  queryParam: string
   component: string
   keepAlive: 0 | 1
   sort: number

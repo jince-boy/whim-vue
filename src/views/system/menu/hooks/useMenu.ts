@@ -10,6 +10,7 @@ const { dictData, getDictData } = await useDict('sys_menu_type')
 const { dictData: sysShowStatusDict, getDictData: getSysShowStatusDict } =
   await useDict('sys_show_status')
 const { dictData: sysRunStatusDict } = await useDict('sys_run_status')
+const { dictData: sysMenuKeepAliveStatus } = await useDict('sys_menu_keepAlive_status')
 
 export function useMenu() {
   const { createIcon } = useIcon()
@@ -159,9 +160,12 @@ export function useMenu() {
         menuTypeDict: dictData,
         sysShowStatusDict: sysShowStatusDict,
         sysRunStatusDict: sysRunStatusDict,
+        sysMenuKeepAliveStatus: sysMenuKeepAliveStatus,
         menuData: tableData.value,
       },
-      onSubmit: async (formModel, dialog) => {},
+      onSubmit: async (formModel, dialog) => {
+        console.log(formModel)
+      },
     })
   }
   /**
