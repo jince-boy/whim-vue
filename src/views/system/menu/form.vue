@@ -57,6 +57,37 @@ const props = withDefaults(
   },
 )
 
+// 定义每个类型要清空的字段
+const fieldClearConfig: Record<MenuType, Partial<Menu>> = {
+  [MenuType.DIRECTORY]: {
+    code: '',
+    redirect: '',
+    queryParam: '',
+    component: '',
+    keepAlive: 0,
+  },
+  [MenuType.MENU]: {
+    code: '',
+    redirect: '',
+  },
+  [MenuType.BUTTON]: {
+    name: '',
+    path: '',
+    queryParam: '',
+    component: '',
+    keepAlive: 0,
+    icon: '',
+    redirect: '',
+    visible: 0,
+  },
+  [MenuType.EXTERNAL]: {
+    code: '',
+    queryParam: '',
+    component: '',
+    keepAlive: 0,
+  },
+}
+
 const formRef = ref<FormInst | null>()
 const formModel = ref(props.modelValue)
 const parentNodeType = ref<number>(props.extendedData.rowType)
@@ -116,6 +147,17 @@ const showStatusChangeHandler = (value: 0 | 1) => {
 const menuStatusChangeHandler = (value: 0 | 1) => {
   formModel.value.status = value
 }
+
+/**
+ * 清空非当前菜单类型的字段
+ * @param newType
+ */
+const clearUnrelatedFields = (newType: MenuType) => {
+  const clearFields = fieldClearConfig[newType]
+  if (clearFields) {
+    Object.assign(formModel.value, clearFields)
+  }
+}
 /**
  * 缓存状态切换时，更新keepAlive
  * @param value
@@ -123,6 +165,7 @@ const menuStatusChangeHandler = (value: 0 | 1) => {
 const menuKeepAliveChangeHandler = (value: 0 | 1) => {
   formModel.value.keepAlive = value
 }
+
 /** 初始化默认菜单类型 */
 onMounted(() => {
   formModel.value.type = Number(menuTypeData.value[0].value)
@@ -154,7 +197,7 @@ defineExpose({
       />
     </n-form-item>
     <n-form-item label="菜单类型" path="type">
-      <n-radio-group v-model:value="formModel.type">
+      <n-radio-group v-model:value="formModel.type" @update:value="clearUnrelatedFields">
         <n-radio-button
           v-for="item in menuTypeData"
           :key="item.value"
