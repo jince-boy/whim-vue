@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4986031 */
-  src: url('iconfont.woff2?t=1755505095553') format('woff2');
+  src: url('iconfont.woff2?t=1758383249427') format('woff2');
 }
 
 .iconfont {
@@ -9,6 +9,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bangzhu:before {
+  content: "\e665";
 }
 
 .icon-denglurizhi:before {

@@ -6,6 +6,13 @@
   "description": "whim-vue icon",
   "glyphs": [
     {
+      "icon_id": "367798",
+      "name": "帮助",
+      "font_class": "bangzhu",
+      "unicode": "e665",
+      "unicode_decimal": 58981
+    },
+    {
       "icon_id": "4199545",
       "name": "登录日志",
       "font_class": "denglurizhi",

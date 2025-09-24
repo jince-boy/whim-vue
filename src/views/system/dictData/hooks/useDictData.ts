@@ -152,7 +152,7 @@ export function useDictData(props: DictDataProps) {
    * 打开修改字典数据对话框
    * @param id
    */
-  const openEditDialog = async (id: string | number) => {
+  const openEditDialog = async (id: string) => {
     const data = await getDictDataDetail(id)
     openFormDialog<DictData>({
       title: '修改字典',

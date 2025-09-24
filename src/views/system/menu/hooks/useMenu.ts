@@ -1,10 +1,17 @@
-import { fetchMenuList } from '@/api/system/menu'
+import {
+  deleteMenu,
+  fetchMenuDetail,
+  fetchMenuList,
+  insertMenu,
+  updateMenu,
+} from '@/api/system/menu'
 import { type DataTableColumn, NButton, NSpace, NTag, useMessage } from 'naive-ui'
-import type { Menu, MenuItem } from '@/views/system/menu/hooks/types.ts'
+import type { Menu } from '@/views/system/menu/hooks/types.ts'
 import { useIcon } from '@/components/icon/useIcon.ts'
 import { useDict } from '@/components/dict/useDict.ts'
 import { useFormDialog } from '@/components/dialog/useFormDialog.ts'
 import editForm from '@/views/system/menu/form.vue'
+import type { MenuItem } from '@/api/system/menu/type.ts'
 
 const { dictData, getDictData } = await useDict('sys_menu_type')
 const { dictData: sysShowStatusDict, getDictData: getSysShowStatusDict } =
@@ -14,12 +21,15 @@ const { dictData: sysMenuKeepAliveStatus } = await useDict('sys_menu_keepAlive_s
 
 export function useMenu() {
   const { createIcon } = useIcon()
-  const { openFormDialog } = useFormDialog()
+  const message = useMessage()
+  const { openFormDialog, openDeleteDialog } = useFormDialog()
 
   const form = reactive({
     title: '',
   })
+
   const tableData = ref<MenuItem[]>([])
+
   const tableColumns: DataTableColumn[] = [
     {
       title: '菜单名称',
@@ -107,26 +117,24 @@ export function useMenu() {
       render(row: object) {
         const menu = row as MenuItem
         return h(NSpace, { justify: 'center' }, () => [
-          menu.type == 3 || menu.type == 4
-            ? null
-            : h(
-                NButton,
-                {
-                  text: true,
-                  type: 'primary',
-                  onClick: async () => {
-                    await openAddDialog(menu.id, menu.type)
-                  },
-                },
-                { default: () => '新增' },
-              ),
+          h(
+            NButton,
+            {
+              text: true,
+              type: 'primary',
+              onClick: async () => {
+                openAddDialog(menu.id)
+              },
+            },
+            { default: () => '新增' },
+          ),
           h(
             NButton,
             {
               text: true,
               type: 'info',
               onClick: async () => {
-                // await openEditDialog(dictType.id)
+                await openEditDialog(menu.id)
               },
             },
             { default: () => '修改' },
@@ -137,7 +145,7 @@ export function useMenu() {
               text: true,
               type: 'error',
               onClick: () => {
-                // removeDictType(dictType)
+                removeMenu(menu)
               },
             },
             { default: () => '删除' },
@@ -147,16 +155,30 @@ export function useMenu() {
     },
   ]
   const loading = ref(false)
+
+  // 展开菜单的键
   const expandedRowKeys = ref<Array<number | string>>([])
 
-  const openAddDialog = (rowId: string, rowType: number) => {
+  /**
+   * 获取菜单详情
+   * @param id
+   */
+  const getMenuDetail = async (id: string): Promise<Menu> => {
+    const res = await fetchMenuDetail({ id })
+    return res.data as Menu
+  }
+
+  /**
+   * 新增菜单
+   * @param parentId
+   */
+  const openAddDialog = (parentId?: string) => {
     openFormDialog<Menu>({
       title: '新建菜单',
       width: 800,
       formComponent: editForm,
       extendedData: {
-        rowId: rowId ?? '0',
-        rowType: rowType ?? 1,
+        parentId: parentId ?? '0',
         menuTypeDict: dictData,
         sysShowStatusDict: sysShowStatusDict,
         sysRunStatusDict: sysRunStatusDict,
@@ -164,7 +186,64 @@ export function useMenu() {
         menuData: tableData.value,
       },
       onSubmit: async (formModel, dialog) => {
-        console.log(formModel)
+        insertMenu(formModel).then((res) => {
+          if (res.code == 200) {
+            dialog.destroy()
+            message.success(`${dialog.title}成功`)
+            getMenuList()
+          } else {
+            message.error(res.message)
+          }
+        })
+      },
+    })
+  }
+  /**
+   * 修改菜单
+   * @param id
+   */
+  const openEditDialog = async (id: string) => {
+    const data = await getMenuDetail(id)
+    openFormDialog<Menu>({
+      title: '修改菜单',
+      formComponent: editForm,
+      model: data,
+      extendedData: {
+        menuTypeDict: dictData,
+        sysShowStatusDict: sysShowStatusDict,
+        sysRunStatusDict: sysRunStatusDict,
+        sysMenuKeepAliveStatus: sysMenuKeepAliveStatus,
+        menuData: tableData.value,
+      },
+      onSubmit: async (formModel, dialog) => {
+        updateMenu(formModel).then((res) => {
+          if (res.code == 200) {
+            dialog.destroy()
+            message.success(`${dialog.title}成功`)
+            getMenuList()
+          } else {
+            message.error(res.message)
+          }
+        })
+      },
+    })
+  }
+  /**
+   * 删除菜单
+   * @param row 菜单
+   */
+  const removeMenu = (row: MenuItem) => {
+    openDeleteDialog({
+      content: `确定要删除${row.title}吗？删除后无法恢复！`,
+      onSubmit: () => {
+        deleteMenu({ menuIds: [row.id] }).then((res) => {
+          if (res.code == 200) {
+            message.success(`删除成功`)
+            getMenuList()
+          } else {
+            message.error(res.message)
+          }
+        })
       },
     })
   }

@@ -12,6 +12,7 @@ export interface MenuItem {
   icon: string
   keepAlive: 0 | 1
   visible: 0 | 1
+  status: 0 | 1
   redirect: string
   remark: string
   children?: MenuItem[]

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { Menu, MenuItem } from '@/views/system/menu/hooks/types.ts'
+import type { Menu } from '@/views/system/menu/hooks/types.ts'
 import type { FormInst } from 'naive-ui'
 import type { DictData } from '@/components/dict/useDict.ts'
 import { menuRules } from '@/views/system/menu/hooks/rule.ts'
 import WhimSelectIcon from '@/components/icon/WhimSelectIcon.vue'
 import iconfont from '@/assets/iconfont/iconfont.json'
+import Icon from '@/components/icon/Icon.vue'
+import type { MenuItem } from '@/api/system/menu/type.ts'
 
 enum MenuType {
   DIRECTORY = 1, // 目录
@@ -16,9 +18,8 @@ enum MenuType {
 const props = withDefaults(
   defineProps<{
     modelValue?: Menu
-    extendedData?: {
-      rowId: string
-      rowType: number
+    extendedData: {
+      parentId: string
       menuTypeDict: DictData[]
       sysShowStatusDict: DictData[]
       sysRunStatusDict: DictData[]
@@ -46,8 +47,7 @@ const props = withDefaults(
       remark: '',
     }),
     extendedData: () => ({
-      rowId: '0',
-      rowType: 1,
+      parentId: '0',
       menuTypeDict: [] as DictData[],
       sysShowStatusDict: [] as DictData[],
       sysRunStatusDict: [] as DictData[],
@@ -90,47 +90,6 @@ const fieldClearConfig: Record<MenuType, Partial<Menu>> = {
 
 const formRef = ref<FormInst | null>()
 const formModel = ref(props.modelValue)
-const parentNodeType = ref<number>(props.extendedData.rowType)
-
-/** 允许作为父节点的菜单类型 */
-const allowedTypes = [MenuType.DIRECTORY, MenuType.MENU]
-
-/** 菜单树：只保留 allowedTypes */
-const menuData = computed(() => {
-  const filterMenuByType = (menu: MenuItem[]): MenuItem[] =>
-    menu
-      .map((item) => {
-        const newItem: MenuItem = { ...item }
-        if (newItem.children?.length) {
-          const filteredChildren = filterMenuByType(newItem.children)
-          newItem.children = filteredChildren.length > 0 ? filteredChildren : undefined
-        }
-        return newItem
-      })
-      .filter((item) => allowedTypes.includes(item.type))
-  return [
-    {
-      title: '顶级菜单',
-      id: '0',
-      type: MenuType.DIRECTORY,
-      children: filterMenuByType(props.extendedData.menuData),
-    } as MenuItem,
-  ]
-})
-
-/** 根据 parentId 动态决定可选菜单类型 */
-const menuTypeData = computed(() => {
-  return parentNodeType.value === 1
-    ? props.extendedData.menuTypeDict
-    : props.extendedData.menuTypeDict.filter((d) => d.value === String(MenuType.BUTTON))
-})
-
-/** 父节点切换时，修正 parentId 和 type */
-const selectedParentIdHandler = (value: string, option: MenuItem) => {
-  formModel.value.parentId = value
-  parentNodeType.value = option.type
-  formModel.value.type = Number(menuTypeData.value[0].value)
-}
 
 /**
  * 显示状态切换时，更新status
@@ -147,7 +106,13 @@ const showStatusChangeHandler = (value: 0 | 1) => {
 const menuStatusChangeHandler = (value: 0 | 1) => {
   formModel.value.status = value
 }
-
+/**
+ * 缓存状态切换时，更新keepAlive
+ * @param value
+ */
+const menuKeepAliveChangeHandler = (value: 0 | 1) => {
+  formModel.value.keepAlive = value
+}
 /**
  * 清空非当前菜单类型的字段
  * @param newType
@@ -158,17 +123,10 @@ const clearUnrelatedFields = (newType: MenuType) => {
     Object.assign(formModel.value, clearFields)
   }
 }
-/**
- * 缓存状态切换时，更新keepAlive
- * @param value
- */
-const menuKeepAliveChangeHandler = (value: 0 | 1) => {
-  formModel.value.keepAlive = value
-}
 
-/** 初始化默认菜单类型 */
+/** 初始化父节点及默认菜单类型 */
 onMounted(() => {
-  formModel.value.type = Number(menuTypeData.value[0].value)
+  // formModel.value.parentId = props.extendedData.parentMenu.id
 })
 
 defineExpose({
@@ -189,17 +147,17 @@ defineExpose({
   >
     <n-form-item label="上级菜单" path="parentId">
       <n-tree-select
-        :options="menuData"
+        :options="props.extendedData.menuData"
         label-field="title"
         key-field="id"
-        :default-value="props.extendedData.rowId"
-        @update:value="selectedParentIdHandler"
+        :default-value="'0'"
+        v-model:value="formModel.parentId"
       />
     </n-form-item>
     <n-form-item label="菜单类型" path="type">
       <n-radio-group v-model:value="formModel.type" @update:value="clearUnrelatedFields">
         <n-radio-button
-          v-for="item in menuTypeData"
+          v-for="item in props.extendedData.menuTypeDict"
           :key="item.value"
           :value="Number(item.value)"
           :label="item.label"
@@ -219,7 +177,11 @@ defineExpose({
     </n-form-item>
     <n-grid :cols="2" :x-gap="12">
       <n-form-item-gi label="菜单名称" path="title">
-        <n-input v-model:value="formModel.title" type="text" placeholder="请输入菜单名称" />
+        <n-input v-model:value="formModel.title" type="text" placeholder="请输入菜单名称" clearable>
+          <template #suffix>
+            <Icon name="taiyang1" style="margin-left: 12px"></Icon>
+          </template>
+        </n-input>
       </n-form-item-gi>
       <n-form-item-gi label="外链地址" v-if="formModel.type === MenuType.EXTERNAL" path="redirect">
         <n-input v-model:value="formModel.redirect" type="text" placeholder="请输入外链地址" />
@@ -266,7 +228,7 @@ defineExpose({
           <n-tab
             v-for="item in props.extendedData.sysShowStatusDict"
             :key="item.value"
-            :name="item.value"
+            :name="Number(item.value)"
             >{{ item.label }}</n-tab
           >
         </n-tabs>
@@ -283,7 +245,7 @@ defineExpose({
           <n-tab
             v-for="item in props.extendedData.sysRunStatusDict"
             :key="item.value"
-            :name="item.value"
+            :name="Number(item.value)"
             >{{ item.label }}</n-tab
           >
         </n-tabs>
@@ -300,10 +262,21 @@ defineExpose({
           <n-tab
             v-for="item in props.extendedData.sysMenuKeepAliveStatus"
             :key="item.value"
-            :name="item.value"
+            :name="Number(item.value)"
             >{{ item.label }}</n-tab
           >
         </n-tabs>
+      </n-form-item-gi>
+      <n-form-item-gi label="备注" path="remark" :span="12">
+        <n-input
+          v-model:value="formModel.remark"
+          type="textarea"
+          placeholder="请输入备注"
+          :autosize="{
+            minRows: 3,
+            maxRows: 3,
+          }"
+        />
       </n-form-item-gi>
     </n-grid>
   </n-form>

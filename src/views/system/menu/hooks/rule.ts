@@ -11,7 +11,7 @@ export const menuRules: FormRules = {
   component: [{ type: 'string', required: true, message: '请输入组件路径', trigger: 'blur' }],
   sort: [{ type: 'number', required: true, message: '请输入排序', trigger: 'blur' }],
   icon: [{ type: 'string', required: true, message: '请选择图标', trigger: 'blur' }],
-  visible: [{ type: 'number', required: true, message: '请选择显示状态', trigger: 'blur' }],
-  status: [{ type: 'number', required: true, message: '请选择菜单状态', trigger: 'blur' }],
-  keepAlive: [{ type: 'number', required: true, message: '请选择缓存状态', trigger: 'blur' }],
+  visible: [{ type: 'number', required: true, message: '请选择显示状态', trigger: 'change' }],
+  status: [{ type: 'number', required: true, message: '请选择菜单状态', trigger: 'change' }],
+  keepAlive: [{ type: 'number', required: true, message: '请选择缓存状态', trigger: 'change' }],
 }
