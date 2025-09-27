@@ -91,6 +91,32 @@ const fieldClearConfig: Record<MenuType, Partial<Menu>> = {
 const formRef = ref<FormInst | null>()
 const formModel = ref(props.modelValue)
 
+/** 允许作为父节点的菜单类型 */
+const allowedTypes = [MenuType.DIRECTORY, MenuType.MENU]
+
+/** 菜单树：只保留 allowedTypes */
+const menuData = computed(() => {
+  const filterMenuByType = (menu: MenuItem[]): MenuItem[] =>
+    menu
+      .map((item) => {
+        const newItem: MenuItem = { ...item }
+        if (newItem.children?.length) {
+          const filteredChildren = filterMenuByType(newItem.children)
+          newItem.children = filteredChildren.length > 0 ? filteredChildren : undefined
+        }
+        return newItem
+      })
+      .filter((item) => allowedTypes.includes(item.type))
+  return [
+    {
+      title: '顶级菜单',
+      id: '0',
+      type: MenuType.DIRECTORY,
+      children: filterMenuByType(props.extendedData.menuData),
+    } as MenuItem,
+  ]
+})
+
 /**
  * 显示状态切换时，更新status
  * @param value
@@ -119,14 +145,18 @@ const menuKeepAliveChangeHandler = (value: 0 | 1) => {
  */
 const clearUnrelatedFields = (newType: MenuType) => {
   const clearFields = fieldClearConfig[newType]
-  if (clearFields) {
-    Object.assign(formModel.value, clearFields)
+  formModel.value = {
+    ...props.modelValue,
+    ...clearFields, // 覆盖需要清空的字段
+    type: newType, // 确保类型更新
   }
 }
 
 /** 初始化父节点及默认菜单类型 */
 onMounted(() => {
-  // formModel.value.parentId = props.extendedData.parentMenu.id
+  if (props.extendedData.parentId) {
+    formModel.value.parentId = props.extendedData.parentId
+  }
 })
 
 defineExpose({
@@ -147,10 +177,9 @@ defineExpose({
   >
     <n-form-item label="上级菜单" path="parentId">
       <n-tree-select
-        :options="props.extendedData.menuData"
+        :options="menuData"
         label-field="title"
         key-field="id"
-        :default-value="'0'"
         v-model:value="formModel.parentId"
       />
     </n-form-item>

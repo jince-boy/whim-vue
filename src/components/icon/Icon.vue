@@ -6,7 +6,7 @@ defineOptions({
 })
 
 interface Props {
-  name: string // 唯一必需的图标名称属性
+  name: string | null // 唯一必需的图标名称属性
   size?: number
   color?: string
 }
@@ -17,7 +17,10 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // 动态生成 iconfont 类名和样式
-const iconClass = computed(() => `iconfont icon-${props.name}`)
+const iconClass = computed(() => {
+  return props.name ? `iconfont icon-${props.name}` : ''
+})
+
 const iconStyle = computed(() => ({
   fontSize: `${props.size}px`,
   color: props.color,
@@ -25,7 +28,8 @@ const iconStyle = computed(() => ({
 </script>
 
 <template>
-  <i :class="iconClass" :style="iconStyle" />
+  <!-- 如果 name 为空或 null，就不渲染 -->
+  <i v-if="props.name" :class="iconClass" :style="iconStyle" />
 </template>
 
 <style scoped></style>

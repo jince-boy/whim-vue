@@ -154,11 +154,11 @@ export function useMenu() {
       },
     },
   ]
+
   const loading = ref(false)
 
   // 展开菜单的键
   const expandedRowKeys = ref<Array<number | string>>([])
-
   /**
    * 获取菜单详情
    * @param id
@@ -204,6 +204,7 @@ export function useMenu() {
    */
   const openEditDialog = async (id: string) => {
     const data = await getMenuDetail(id)
+    console.log(data)
     openFormDialog<Menu>({
       title: '修改菜单',
       formComponent: editForm,
