@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SearchForm from '@/components/form/SearchForm.vue'
-import WhimTable from '@/components/table/WhimTable.vue'
+import WhimTable2 from '@/components/table/WhimTable2.vue'
 import { useDictType } from '@/views/system/dictType/hooks/useDictType.ts'
 import { useIcon } from '@/components/icon/useIcon.ts'
 
@@ -16,11 +16,12 @@ const {
   loading,
   getDictTypePage,
   openAddDialog,
-  openEditDialog,
+  // openEditDialog,
   removeDictTypeBatch,
   handleResetDictCache,
   exportExcel,
 } = useDictType()
+
 </script>
 
 <template>
@@ -40,22 +41,13 @@ const {
         </n-form-item-gi>
       </template>
     </SearchForm>
-    <WhimTable
+    <WhimTable2
       :columns="tableColumns"
       :data="tableData"
       :pagination="pagination"
       :loading="loading"
-      :add-button-permission="['system:dictType:add']"
-      :edit-button-permission="['system:dictType:edit']"
-      :delete-button-permission="['system:dictType:delete']"
-      :export-button-permission="['system:dictType:export']"
-      @refresh="getDictTypePage"
-      @update:pageNum="getDictTypePage"
-      @update:pageSize="getDictTypePage"
       @add="openAddDialog"
-      @edit="openEditDialog"
-      @delete="removeDictTypeBatch"
-      @export="exportExcel"
+      @update:checked-row-keys="(row)=>console.log(row)"
     >
       <template #action-buttons-right>
         <n-button
@@ -66,7 +58,7 @@ const {
           >刷新缓存</n-button
         >
       </template>
-    </WhimTable>
+    </WhimTable2>
   </n-space>
 </template>
 

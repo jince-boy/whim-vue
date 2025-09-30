@@ -33,7 +33,7 @@ const props = withDefaults(
       name: '',
       title: '',
       parentId: '0',
-      type: 0,
+      type: MenuType.DIRECTORY,
       path: '',
       queryParam: '',
       component: '',

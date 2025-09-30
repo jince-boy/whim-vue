@@ -76,8 +76,8 @@ const iconButtonClickHandler = (fontClass: string) => {
   >
     <template #trigger>
       <n-input-group>
-        <n-input-group-label>
-          <Icon :name="iconValue" style="display: block; width: 16px" />
+        <n-input-group-label style="width:40px;">
+          <Icon :name="iconValue"/>
         </n-input-group-label>
         <n-input
           :value="iconValue"
